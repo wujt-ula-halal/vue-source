@@ -1,6 +1,7 @@
 /* @flow */
 
-import { makeMap } from 'shared/util'
+// import { makeMap } from 'shared/util'
+import { makeMap } from '../../../shared/util'
 
 const isAttr = makeMap(
   'accept,accept-charset,accesskey,action,align,alt,async,autocomplete,' +
@@ -19,12 +20,12 @@ const isAttr = makeMap(
 )
 
 const unsafeAttrCharRE = /[>/="'\u0009\u000a\u000c\u0020]/ // eslint-disable-line no-control-regex
-export const isSSRUnsafeAttr = (name: string): boolean => {
+export const isSSRUnsafeAttr = (name) => {
   return unsafeAttrCharRE.test(name)
 }
 
 /* istanbul ignore next */
-const isRenderableAttr = (name: string): boolean => {
+const isRenderableAttr = (name) => {
   return (
     isAttr(name) ||
     name.indexOf('data-') === 0 ||
@@ -47,7 +48,7 @@ const ESC = {
   '&': '&amp;'
 }
 
-export function escape (s: string) {
+export function escape (s) {
   return s.replace(/[<>"&]/g, escapeChar)
 }
 

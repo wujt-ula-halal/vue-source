@@ -1,16 +1,17 @@
 /* @flow */
 
-import { extend, warn, isObject } from 'core/util/index'
+// import { extend, warn, isObject } from 'core/util/index'
+import { extend, warn, isObject } from '../../../core/util/index'
 
 /**
  * Runtime helper for rendering <slot>
  */
 export function renderSlot (
-  name: string,
-  fallback: ?Array<VNode>,
-  props: ?Object,
-  bindObject: ?Object
-): ?Array<VNode> {
+  name,
+  fallback,
+  props,
+  bindObject
+) {
   const scopedSlotFn = this.$scopedSlots[name]
   let nodes
   if (scopedSlotFn) { // scoped slot

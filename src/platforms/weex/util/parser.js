@@ -8,7 +8,7 @@ const acorn = require('acorn') // $flow-disable-line
 const walk = require('acorn/dist/walk') // $flow-disable-line
 const escodegen = require('escodegen')
 
-export function nodeToBinding (node: Object): any {
+export function nodeToBinding (node) {
   switch (node.type) {
     case 'Literal': return node.value
     case 'Identifier':
@@ -39,7 +39,7 @@ export function nodeToBinding (node: Object): any {
   }
 }
 
-export function generateBinding (exp: ?string): any {
+export function generateBinding (exp) {
   if (exp && typeof exp === 'string') {
     let ast = null
     try {

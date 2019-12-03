@@ -1,12 +1,12 @@
 /* @flow */
 
 export function resolveScopedSlots (
-  fns: ScopedSlotsData, // see flow/vnode
-  res?: Object,
+  fns, // see flow/vnode
+  res,
   // the following are added in 2.6
-  hasDynamicKeys?: boolean,
-  contentHashKey?: number
-): { [key: string]: Function, $stable: boolean } {
+  hasDynamicKeys,
+  contentHashKey
+) {
   res = res || { $stable: !hasDynamicKeys }
   for (let i = 0; i < fns.length; i++) {
     const slot = fns[i]
@@ -21,7 +21,7 @@ export function resolveScopedSlots (
     }
   }
   if (contentHashKey) {
-    (res: any).$key = contentHashKey
+    (res).$key = contentHashKey
   }
   return res
 }

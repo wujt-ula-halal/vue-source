@@ -2,22 +2,15 @@
 
 import { escape } from '../util'
 
-import {
-  isDef,
-  isUndef,
-  extend
-} from 'shared/util'
+// import {isDef,isUndef,extend} from 'shared/util'
+import {isDef,isUndef,extend} from '../../../../shared/util'
 
-import {
-  isBooleanAttr,
-  isEnumeratedAttr,
-  isFalsyAttrValue,
-  convertEnumeratedValue
-} from 'web/util/attrs'
+// import {isBooleanAttr,isEnumeratedAttr,isFalsyAttrValue,convertEnumeratedValue} from 'web/util/attrs'
+import {isBooleanAttr,isEnumeratedAttr,isFalsyAttrValue,convertEnumeratedValue} from '../../../web/util/attrs'
 
 import { isSSRUnsafeAttr } from 'web/server/util'
 
-export default function renderAttrs (node: VNodeWithData): string {
+export default function renderAttrs (node) {
   let attrs = node.data.attrs
   let res = ''
 
@@ -49,7 +42,7 @@ export default function renderAttrs (node: VNodeWithData): string {
   return res
 }
 
-export function renderAttr (key: string, value: string): string {
+export function renderAttr (key, value) {
   if (isBooleanAttr(key)) {
     if (!isFalsyAttrValue(value)) {
       return ` ${key}="${key}"`

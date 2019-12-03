@@ -1,10 +1,11 @@
 /* @flow */
 
-import { looseEqual, looseIndexOf } from 'shared/util'
+// import { looseEqual, looseIndexOf } from 'shared/util'
+import { looseEqual, looseIndexOf } from '../../../../shared/util'
 
 // this is only applied for <select v-model> because it is the only edge case
 // that must be done at runtime instead of compile time.
-export default function model (node: VNodeWithData, dir: VNodeDirective) {
+export default function model (node, dir) {
   if (!node.children) return
   const value = dir.value
   const isMultiple = node.data.attrs && node.data.attrs.multiple

@@ -1,9 +1,11 @@
 /* @flow */
 
-import { parseFor } from 'compiler/parser/index'
-import { getAndRemoveAttr, addRawAttr } from 'compiler/helpers'
+// import { parseFor } from 'compiler/parser/index'
+import { parseFor } from '../../../../../compiler/parser/index'
+// import { getAndRemoveAttr, addRawAttr } from 'compiler/helpers'
+import { getAndRemoveAttr, addRawAttr } from '../../../../../compiler/helpers'
 
-export function preTransformVFor (el: ASTElement, options: WeexCompilerOptions) {
+export function preTransformVFor (el, options) {
   const exp = getAndRemoveAttr(el, 'v-for')
   if (!exp) {
     return
@@ -17,7 +19,7 @@ export function preTransformVFor (el: ASTElement, options: WeexCompilerOptions) 
     return
   }
 
-  const desc: Object = {
+  const desc = {
     '@expression': res.for,
     '@alias': res.alias
   }

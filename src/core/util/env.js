@@ -28,8 +28,10 @@ if (inBrowser) {
       get () {
         /* istanbul ignore next */
         supportsPassive = true
+        // 自己添加的, 不然get没有return
+        return void 0
       }
-    }: Object)) // https://github.com/facebook/flow/issues/285
+    })) // https://github.com/facebook/flow/issues/285
     window.addEventListener('test-passive', null, opts)
   } catch (e) {}
 }
@@ -55,7 +57,7 @@ export const isServerRendering = () => {
 export const devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
 /* istanbul ignore next */
-export function isNative (Ctor: any): boolean {
+export function isNative (Ctor) {
   return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
 }
 
@@ -70,15 +72,15 @@ if (typeof Set !== 'undefined' && isNative(Set)) {
   _Set = Set
 } else {
   // a non-standard Set polyfill that only works with primitive keys.
-  _Set = class Set implements SimpleSet {
-    set: Object;
+  _Set = class Set {
+    set;
     constructor () {
       this.set = Object.create(null)
     }
-    has (key: string | number) {
+    has (key) {
       return this.set[key] === true
     }
-    add (key: string | number) {
+    add (key) {
       this.set[key] = true
     }
     clear () {
@@ -87,10 +89,6 @@ if (typeof Set !== 'undefined' && isNative(Set)) {
   }
 }
 
-export interface SimpleSet {
-  has(key: string | number): boolean;
-  add(key: string | number): mixed;
-  clear(): void;
-}
+
 
 export { _Set }

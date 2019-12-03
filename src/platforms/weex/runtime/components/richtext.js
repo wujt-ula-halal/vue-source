@@ -1,19 +1,19 @@
 /* @flow */
 
-function getVNodeType (vnode: VNode): string {
+function getVNodeType (vnode) {
   if (!vnode.tag) {
     return ''
   }
   return vnode.tag.replace(/vue\-component\-(\d+\-)?/, '')
 }
 
-function isSimpleSpan (vnode: VNode): boolean {
+function isSimpleSpan (vnode) {
   return vnode.children &&
     vnode.children.length === 1 &&
     !vnode.children[0].tag
 }
 
-function parseStyle (vnode: VNode): Object | void {
+function parseStyle (vnode) {
   if (!vnode || !vnode.data) {
     return
   }
@@ -31,14 +31,14 @@ function parseStyle (vnode: VNode): Object | void {
   }
 }
 
-function convertVNodeChildren (children: Array<VNode>): Array<VNode> | void {
+function convertVNodeChildren (children) {
   if (!children.length) {
     return
   }
 
   return children.map(vnode => {
-    const type: string = getVNodeType(vnode)
-    const props: Object = { type }
+    const type = getVNodeType(vnode)
+    const props = { type }
 
     // convert raw text node
     if (!type) {
@@ -71,7 +71,7 @@ function convertVNodeChildren (children: Array<VNode>): Array<VNode> | void {
 
 export default {
   name: 'richtext',
-  render (h: Function) {
+  render (h) {
     return h('weex:richtext', {
       on: this._events,
       attrs: {

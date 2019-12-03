@@ -1,8 +1,9 @@
 /* @flow */
 
-import { extend } from 'shared/util'
+// import { extend } from 'shared/util'
+import { extend } from '../../../../shared/util'
 
-function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateAttrs (oldVnode, vnode) {
   if (!oldVnode.data.attrs && !vnode.data.attrs) {
     return
   }

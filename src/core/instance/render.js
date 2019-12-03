@@ -16,7 +16,7 @@ import VNode, { createEmptyVNode } from '../vdom/vnode'
 
 import { isUpdatingChildComponent } from './lifecycle'
 
-export function initRender (vm: Component) {
+export function initRender (vm) {
   vm._vnode = null // the root of the child tree
   vm._staticTrees = null // v-once cached trees
   const options = vm.$options
@@ -51,23 +51,23 @@ export function initRender (vm: Component) {
   }
 }
 
-export let currentRenderingInstance: Component | null = null
+export let currentRenderingInstance = null
 
 // for testing only
-export function setCurrentRenderingInstance (vm: Component) {
+export function setCurrentRenderingInstance (vm) {
   currentRenderingInstance = vm
 }
 
-export function renderMixin (Vue: Class<Component>) {
+export function renderMixin (Vue) {
   // install runtime convenience helpers
   installRenderHelpers(Vue.prototype)
 
-  Vue.prototype.$nextTick = function (fn: Function) {
+  Vue.prototype.$nextTick = function (fn) {
     return nextTick(fn, this)
   }
 
-  Vue.prototype._render = function (): VNode {
-    const vm: Component = this
+  Vue.prototype._render = function () {
+    const vm = this
     const { render, _parentVnode } = vm.$options
 
     if (_parentVnode) {

@@ -1,17 +1,18 @@
 /* @flow */
-declare var document: WeexDocument;
+var document;
 
-import { warn } from 'core/util/index'
+// import { warn } from 'core/util/index'
+import { warn } from '../../../core/util/index'
 
 export const RECYCLE_LIST_MARKER = '@inRecycleList'
 
 // Register the component hook to weex native render engine.
 // The hook will be triggered by native, not javascript.
 export function registerComponentHook (
-  componentId: string,
-  type: string, // hook type, could be "lifecycle" or "instance"
-  hook: string, // hook name
-  fn: Function
+  componentId,
+  type, // hook type, could be "lifecycle" or "instance"
+  hook, // hook name
+  fn
 ) {
   if (!document || !document.taskCenter) {
     warn(`Can't find available "document" or "taskCenter".`)
@@ -25,9 +26,9 @@ export function registerComponentHook (
 
 // Updates the state of the component to weex native render engine.
 export function updateComponentData (
-  componentId: string,
-  newData: Object | void,
-  callback?: Function
+  componentId,
+  newData,
+  callback
 ) {
   if (!document || !document.taskCenter) {
     warn(`Can't find available "document" or "taskCenter".`)

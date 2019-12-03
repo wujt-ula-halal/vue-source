@@ -2,9 +2,10 @@
 
 import VNode from '../vnode'
 import { createFnInvoker } from './update-listeners'
-import { remove, isDef, isUndef, isTrue } from 'shared/util'
+// import { remove, isDef, isUndef, isTrue } from 'shared/util'
+import { remove, isDef, isUndef, isTrue } from '../../../shared/util'
 
-export function mergeVNodeHook (def: Object, hookKey: string, hook: Function) {
+export function mergeVNodeHook (def, hookKey, hook) {
   if (def instanceof VNode) {
     def = def.data.hook || (def.data.hook = {})
   }

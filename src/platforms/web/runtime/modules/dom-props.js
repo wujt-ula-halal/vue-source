@@ -1,16 +1,18 @@
 /* @flow */
 
-import { isDef, isUndef, extend, toNumber } from 'shared/util'
-import { isSVG } from 'web/util/index'
+// import { isDef, isUndef, extend, toNumber } from 'shared/util'
+import { isDef, isUndef, extend, toNumber } from '../../../../shared/util'
+// import { isSVG } from 'web/util/index'
+import { isSVG } from '../../../web/util/index'
 
 let svgContainer
 
-function updateDOMProps (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateDOMProps (oldVnode, vnode) {
   if (isUndef(oldVnode.data.domProps) && isUndef(vnode.data.domProps)) {
     return
   }
   let key, cur
-  const elm: any = vnode.elm
+  const elm = vnode.elm
   const oldProps = oldVnode.data.domProps || {}
   let props = vnode.data.domProps || {}
   // clone observed objects, as the user probably wants to mutate it
@@ -76,9 +78,8 @@ function updateDOMProps (oldVnode: VNodeWithData, vnode: VNodeWithData) {
 }
 
 // check platforms/web/util/attrs.js acceptValue
-type acceptValueElm = HTMLInputElement | HTMLSelectElement | HTMLOptionElement;
 
-function shouldUpdateValue (elm: acceptValueElm, checkVal: string): boolean {
+function shouldUpdateValue (elm, checkVal) {
   return (!elm.composing && (
     elm.tagName === 'OPTION' ||
     isNotInFocusAndDirty(elm, checkVal) ||
@@ -86,7 +87,7 @@ function shouldUpdateValue (elm: acceptValueElm, checkVal: string): boolean {
   ))
 }
 
-function isNotInFocusAndDirty (elm: acceptValueElm, checkVal: string): boolean {
+function isNotInFocusAndDirty (elm, checkVal) {
   // return true when textbox (.number and .trim) loses focus and its value is
   // not equal to the updated value
   let notInFocus = true
@@ -96,7 +97,7 @@ function isNotInFocusAndDirty (elm: acceptValueElm, checkVal: string): boolean {
   return notInFocus && elm.value !== checkVal
 }
 
-function isDirtyWithModifiers (elm: any, newVal: string): boolean {
+function isDirtyWithModifiers (elm, newVal) {
   const value = elm.value
   const modifiers = elm._vModifiers // injected by v-model runtime
   if (isDef(modifiers)) {

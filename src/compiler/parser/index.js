@@ -5,8 +5,10 @@ import { parseHTML } from './html-parser'
 import { parseText } from './text-parser'
 import { parseFilters } from './filter-parser'
 import { genAssignmentCode } from '../directives/model'
-import { extend, cached, no, camelize, hyphenate } from 'shared/util'
-import { isIE, isEdge, isServerRendering } from 'core/util/env'
+// import { extend, cached, no, camelize, hyphenate } from 'shared/util'
+import { extend, cached, no, camelize, hyphenate } from '../../shared/util'
+// import { isIE, isEdge, isServerRendering } from 'core/util/env'
+import { isIE, isEdge, isServerRendering } from '../../core/util/env'
 
 import {
   addProp,
@@ -47,7 +49,7 @@ const decodeHTMLCached = cached(he.decode)
 export const emptySlotScopeToken = `_empty_`
 
 // configurable state
-export let warn: any
+export let warn
 let delimiters
 let transforms
 let preTransforms
@@ -58,10 +60,10 @@ let platformGetTagNamespace
 let maybeComponent
 
 export function createASTElement (
-  tag: string,
-  attrs: Array<ASTAttr>,
-  parent: ASTElement | void
-): ASTElement {
+  tag,
+  attrs,
+  parent
+) {
   return {
     type: 1,
     tag,
@@ -77,16 +79,16 @@ export function createASTElement (
  * Convert HTML string to AST.
  */
 export function parse (
-  template: string,
-  options: CompilerOptions
-): ASTElement | void {
+  template,
+  options
+) {
   warn = options.warn || baseWarn
 
   platformIsPreTag = options.isPreTag || no
   platformMustUseProp = options.mustUseProp || no
   platformGetTagNamespace = options.getTagNamespace || no
   const isReservedTag = options.isReservedTag || no
-  maybeComponent = (el: ASTElement) => !!el.component || !isReservedTag(el.tag)
+  maybeComponent = (el) => !!el.component || !isReservedTag(el.tag)
 
   transforms = pluckModuleFunction(options.modules, 'transformNode')
   preTransforms = pluckModuleFunction(options.modules, 'preTransformNode')
@@ -153,7 +155,7 @@ export function parse (
 
     // final children cleanup
     // filter out scoped slots
-    element.children = element.children.filter(c => !(c: any).slotScope)
+    element.children = element.children.filter(c => !(c).slotScope)
     // remove trailing whitespace node again
     trimEndingWhitespace(element)
 
@@ -221,7 +223,7 @@ export function parse (
         attrs = guardIESVGBug(attrs)
       }
 
-      let element: ASTElement = createASTElement(tag, attrs, currentParent)
+      let element = createASTElement(tag, attrs, currentParent)
       if (ns) {
         element.ns = ns
       }
@@ -308,7 +310,7 @@ export function parse (
       closeElement(element)
     },
 
-    chars (text: string, start: number, end: number) {
+    chars (text, start, end) {
       if (!currentParent) {
         if (process.env.NODE_ENV !== 'production') {
           if (text === template) {
@@ -356,7 +358,7 @@ export function parse (
           text = text.replace(whitespaceRE, ' ')
         }
         let res
-        let child: ?ASTNode
+        let child
         if (!inVPre && text !== ' ' && (res = parseText(text, delimiters))) {
           child = {
             type: 2,
@@ -379,11 +381,11 @@ export function parse (
         }
       }
     },
-    comment (text: string, start, end) {
+    comment (text, start, end) {
       // adding anyting as a sibling to the root node is forbidden
       // comments should still be allowed, but ignored
       if (currentParent) {
-        const child: ASTText = {
+        const child = {
           type: 3,
           text,
           isComment: true
@@ -409,7 +411,7 @@ function processRawAttrs (el) {
   const list = el.attrsList
   const len = list.length
   if (len) {
-    const attrs: Array<ASTAttr> = el.attrs = new Array(len)
+    const attrs = el.attrs = new Array(len)
     for (let i = 0; i < len; i++) {
       attrs[i] = {
         name: list[i].name,
@@ -427,8 +429,8 @@ function processRawAttrs (el) {
 }
 
 export function processElement (
-  element: ASTElement,
-  options: CompilerOptions
+  element,
+  options
 ) {
   processKey(element)
 
@@ -486,7 +488,7 @@ function processRef (el) {
   }
 }
 
-export function processFor (el: ASTElement) {
+export function processFor (el) {
   let exp
   if ((exp = getAndRemoveAttr(el, 'v-for'))) {
     const res = parseFor(exp)
@@ -501,14 +503,9 @@ export function processFor (el: ASTElement) {
   }
 }
 
-type ForParseResult = {
-  for: string;
-  alias: string;
-  iterator1?: string;
-  iterator2?: string;
-};
 
-export function parseFor (exp: string): ?ForParseResult {
+
+export function parseFor (exp) {
   const inMatch = exp.match(forAliasRE)
   if (!inMatch) return
   const res = {}
@@ -562,7 +559,7 @@ function processIfConditions (el, parent) {
   }
 }
 
-function findPrevElement (children: Array<any>): ASTElement | void {
+function findPrevElement (children) {
   let i = children.length
   while (i--) {
     if (children[i].type === 1) {
@@ -580,7 +577,7 @@ function findPrevElement (children: Array<any>): ASTElement | void {
   }
 }
 
-export function addIfCondition (el: ASTElement, condition: ASTIfCondition) {
+export function addIfCondition (el, condition) {
   if (!el.ifConditions) {
     el.ifConditions = []
   }
@@ -695,7 +692,7 @@ function processSlotContent (el) {
         const slotContainer = slots[name] = createASTElement('template', [], el)
         slotContainer.slotTarget = name
         slotContainer.slotTargetDynamic = dynamic
-        slotContainer.children = el.children.filter((c: any) => {
+        slotContainer.children = el.children.filter((c) => {
           if (!c.slotScope) {
             c.parent = slotContainer
             return true
@@ -892,7 +889,7 @@ function processAttrs (el) {
   }
 }
 
-function checkInFor (el: ASTElement): boolean {
+function checkInFor (el) {
   let parent = el
   while (parent) {
     if (parent.for !== undefined) {
@@ -903,7 +900,7 @@ function checkInFor (el: ASTElement): boolean {
   return false
 }
 
-function parseModifiers (name: string): Object | void {
+function parseModifiers (name) {
   const match = name.match(modifierRE)
   if (match) {
     const ret = {}
@@ -912,7 +909,7 @@ function parseModifiers (name: string): Object | void {
   }
 }
 
-function makeAttrsMap (attrs: Array<Object>): Object {
+function makeAttrsMap (attrs) {
   const map = {}
   for (let i = 0, l = attrs.length; i < l; i++) {
     if (
@@ -927,11 +924,11 @@ function makeAttrsMap (attrs: Array<Object>): Object {
 }
 
 // for script (e.g. type="x/template") or style, do not decode content
-function isTextTag (el): boolean {
+function isTextTag (el) {
   return el.tag === 'script' || el.tag === 'style'
 }
 
-function isForbiddenTag (el): boolean {
+function isForbiddenTag (el) {
   return (
     el.tag === 'style' ||
     (el.tag === 'script' && (

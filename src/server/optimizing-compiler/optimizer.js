@@ -10,7 +10,8 @@
  * components/slots/custom directives.
  */
 
-import { no, makeMap, isBuiltInTag } from 'shared/util'
+// import { no, makeMap, isBuiltInTag } from 'shared/util'
+import { no, makeMap, isBuiltInTag } from '../../shared/util'
 
 // optimizability constants
 export const optimizability = {
@@ -23,13 +24,13 @@ export const optimizability = {
 
 let isPlatformReservedTag
 
-export function optimize (root: ?ASTElement, options: CompilerOptions) {
+export function optimize (root, options) {
   if (!root) return
   isPlatformReservedTag = options.isReservedTag || no
   walk(root, true)
 }
 
-function walk (node: ASTNode, isRoot?: boolean) {
+function walk (node, isRoot) {
   if (isUnOptimizableTree(node)) {
     node.ssrOptimizability = optimizability.FALSE
     return
@@ -107,7 +108,7 @@ function optimizeSiblings (el) {
   return optimizedChildren
 }
 
-function isUnOptimizableTree (node: ASTNode): boolean {
+function isUnOptimizableTree (node) {
   if (node.type === 2 || node.type === 3) { // text or expression
     return false
   }
@@ -121,7 +122,7 @@ function isUnOptimizableTree (node: ASTNode): boolean {
 
 const isBuiltInDir = makeMap('text,html,show,on,bind,model,pre,cloak,once')
 
-function hasCustomDirective (node: ASTNode): ?boolean {
+function hasCustomDirective (node) {
   return (
     node.type === 1 &&
     node.directives &&
@@ -131,7 +132,7 @@ function hasCustomDirective (node: ASTNode): ?boolean {
 
 // <select v-model> cannot be optimized because it requires a runtime check
 // to determine proper selected option
-function isSelectWithModel (node: ASTNode): boolean {
+function isSelectWithModel (node) {
   return (
     node.type === 1 &&
     node.tag === 'select' &&

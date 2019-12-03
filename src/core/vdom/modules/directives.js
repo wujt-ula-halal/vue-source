@@ -1,18 +1,21 @@
 /* @flow */
 
-import { emptyNode } from 'core/vdom/patch'
-import { resolveAsset, handleError } from 'core/util/index'
-import { mergeVNodeHook } from 'core/vdom/helpers/index'
+// import { emptyNode } from 'core/vdom/patch'
+import { emptyNode } from '../../../core/vdom/patch'
+// import { resolveAsset, handleError } from 'core/util/index'
+import { resolveAsset, handleError } from '../../../core/util/index'
+// import { mergeVNodeHook } from 'core/vdom/helpers/index'
+import { mergeVNodeHook } from '../../../core/vdom/helpers/index'
 
 export default {
   create: updateDirectives,
   update: updateDirectives,
-  destroy: function unbindDirectives (vnode: VNodeWithData) {
+  destroy: function unbindDirectives (vnode) {
     updateDirectives(vnode, emptyNode)
   }
 }
 
-function updateDirectives (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateDirectives (oldVnode, vnode) {
   if (oldVnode.data.directives || vnode.data.directives) {
     _update(oldVnode, vnode)
   }
@@ -82,9 +85,9 @@ function _update (oldVnode, vnode) {
 const emptyModifiers = Object.create(null)
 
 function normalizeDirectives (
-  dirs: ?Array<VNodeDirective>,
-  vm: Component
-): { [key: string]: VNodeDirective } {
+  dirs,
+  vm
+) {
   const res = Object.create(null)
   if (!dirs) {
     // $flow-disable-line
@@ -104,7 +107,7 @@ function normalizeDirectives (
   return res
 }
 
-function getRawDirName (dir: VNodeDirective): string {
+function getRawDirName (dir) {
   return dir.rawName || `${dir.name}.${Object.keys(dir.modifiers || {}).join('.')}`
 }
 

@@ -4,18 +4,18 @@
 // $flow-disable-line
 const VueFactory = require('./factory')
 
-const instanceOptions: { [key: string]: WeexInstanceOption } = {}
+const instanceOptions = {}
 
 /**
  * Create instance context.
  */
 export function createInstanceContext (
-  instanceId: string,
-  runtimeContext: WeexRuntimeContext,
-  data: Object = {}
-): WeexInstanceContext {
-  const weex: Weex = runtimeContext.weex
-  const instance: WeexInstanceOption = instanceOptions[instanceId] = {
+  instanceId,
+  runtimeContext,
+  data = {}
+) {
+  const weex = runtimeContext.weex
+  const instance = instanceOptions[instanceId] = {
     instanceId,
     config: weex.config,
     document: weex.document,
@@ -37,7 +37,7 @@ export function createInstanceContext (
  * Destroy an instance with id. It will make sure all memory of
  * this instance released and no more leaks.
  */
-export function destroyInstance (instanceId: string): void {
+export function destroyInstance (instanceId) {
   const instance = instanceOptions[instanceId]
   if (instance && instance.app instanceof instance.Vue) {
     try {
@@ -56,9 +56,9 @@ export function destroyInstance (instanceId: string): void {
  * define all possible meaningful keys when instance created.
  */
 export function refreshInstance (
-  instanceId: string,
-  data: Object
-): Error | void {
+  instanceId,
+  data
+) {
   const instance = instanceOptions[instanceId]
   if (!instance || !(instance.app instanceof instance.Vue)) {
     return new Error(`refreshInstance: instance ${instanceId} not found!`)
@@ -76,9 +76,9 @@ export function refreshInstance (
  * Create a fresh instance of Vue for each Weex instance.
  */
 function createVueModuleInstance (
-  instanceId: string,
-  weex: Weex
-): GlobalAPI {
+  instanceId,
+  weex
+) {
   const exports = {}
   VueFactory(exports, weex.document)
   const Vue = exports.Vue
@@ -154,9 +154,9 @@ function createVueModuleInstance (
  * an instance destroyed.
  */
 function getInstanceTimer (
-  instanceId: string,
-  moduleGetter: Function
-): Object {
+  instanceId,
+  moduleGetter
+) {
   const instance = instanceOptions[instanceId]
   const timer = moduleGetter('timer')
   const timerAPIs = {

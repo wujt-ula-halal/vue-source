@@ -10,19 +10,20 @@
 
 const stream = require('stream')
 
-import { isTrue, isUndef } from 'shared/util'
+// import { isTrue, isUndef } from 'shared/util'
+import { isTrue, isUndef } from '../shared/util'
 import { createWriteFunction } from './write'
 
 export default class RenderStream extends stream.Readable {
-  buffer: string;
-  render: (write: Function, done: Function) => void;
-  expectedSize: number;
-  write: Function;
-  next: Function;
-  end: Function;
-  done: boolean;
+  buffer;
+  render;
+  expectedSize;
+  write;
+  next;
+  end;
+  done;
 
-  constructor (render: Function) {
+  constructor (render) {
     super()
     this.buffer = ''
     this.render = render
@@ -49,7 +50,7 @@ export default class RenderStream extends stream.Readable {
     }
   }
 
-  pushBySize (n: number) {
+  pushBySize (n) {
     const bufferToPush = this.buffer.substring(0, n)
     this.buffer = this.buffer.substring(n)
     this.push(bufferToPush)
@@ -71,7 +72,7 @@ export default class RenderStream extends stream.Readable {
     }
   }
 
-  _read (n: number) {
+  _read (n) {
     this.expectedSize = n
     // it's possible that the last chunk added bumped the buffer up to > 2 * n,
     // which means we will need to go through multiple read calls to drain it

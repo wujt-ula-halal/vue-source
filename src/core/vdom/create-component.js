@@ -1,8 +1,10 @@
 /* @flow */
 
 import VNode from './vnode'
-import { resolveConstructorOptions } from 'core/instance/init'
-import { queueActivatedComponent } from 'core/observer/scheduler'
+// import { resolveConstructorOptions } from 'core/instance/init'
+import { resolveConstructorOptions } from '../../core/instance/init'
+// import { queueActivatedComponent } from 'core/observer/scheduler'
+import { queueActivatedComponent } from '../../core/observer/scheduler'
 import { createFunctionalComponent } from './create-functional-component'
 
 import {
@@ -27,21 +29,19 @@ import {
   deactivateChildComponent
 } from '../instance/lifecycle'
 
-import {
-  isRecyclableComponent,
-  renderRecyclableComponentTemplate
-} from 'weex/runtime/recycle-list/render-component-template'
+// import {isRecyclableComponent,renderRecyclableComponentTemplate} from 'weex/runtime/recycle-list/render-component-template'
+import {isRecyclableComponent,renderRecyclableComponentTemplate} from '../../platforms/weex/runtime/recycle-list/render-component-template'
 
 // inline hooks to be invoked on component VNodes during patch
 const componentVNodeHooks = {
-  init (vnode: VNodeWithData, hydrating: boolean): ?boolean {
+  init (vnode, hydrating) {
     if (
       vnode.componentInstance &&
       !vnode.componentInstance._isDestroyed &&
       vnode.data.keepAlive
     ) {
       // kept-alive components, treat as a patch
-      const mountedNode: any = vnode // work around flow
+      const mountedNode = vnode // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode)
     } else {
       const child = vnode.componentInstance = createComponentInstanceForVnode(
@@ -52,7 +52,7 @@ const componentVNodeHooks = {
     }
   },
 
-  prepatch (oldVnode: MountedComponentVNode, vnode: MountedComponentVNode) {
+  prepatch (oldVnode, vnode) {
     const options = vnode.componentOptions
     const child = vnode.componentInstance = oldVnode.componentInstance
     updateChildComponent(
@@ -64,7 +64,7 @@ const componentVNodeHooks = {
     )
   },
 
-  insert (vnode: MountedComponentVNode) {
+  insert (vnode) {
     const { context, componentInstance } = vnode
     if (!componentInstance._isMounted) {
       componentInstance._isMounted = true
@@ -84,7 +84,7 @@ const componentVNodeHooks = {
     }
   },
 
-  destroy (vnode: MountedComponentVNode) {
+  destroy (vnode) {
     const { componentInstance } = vnode
     if (!componentInstance._isDestroyed) {
       if (!vnode.data.keepAlive) {
@@ -99,12 +99,12 @@ const componentVNodeHooks = {
 const hooksToMerge = Object.keys(componentVNodeHooks)
 
 export function createComponent (
-  Ctor: Class<Component> | Function | Object | void,
-  data: ?VNodeData,
-  context: Component,
-  children: ?Array<VNode>,
-  tag?: string
-): VNode | Array<VNode> | void {
+  Ctor,
+  data,
+  context,
+  children,
+  tag
+) {
   if (isUndef(Ctor)) {
     return
   }
@@ -206,10 +206,10 @@ export function createComponent (
 }
 
 export function createComponentInstanceForVnode (
-  vnode: any, // we know it's MountedComponentVNode but flow doesn't
-  parent: any, // activeInstance in lifecycle state
-): Component {
-  const options: InternalComponentOptions = {
+  vnode, // we know it's MountedComponentVNode but flow doesn't
+  parent, // activeInstance in lifecycle state
+) {
+  const options = {
     _isComponent: true,
     _parentVnode: vnode,
     parent
@@ -223,7 +223,7 @@ export function createComponentInstanceForVnode (
   return new vnode.componentOptions.Ctor(options)
 }
 
-function installComponentHooks (data: VNodeData) {
+function installComponentHooks (data) {
   const hooks = data.hook || (data.hook = {})
   for (let i = 0; i < hooksToMerge.length; i++) {
     const key = hooksToMerge[i]
@@ -235,7 +235,7 @@ function installComponentHooks (data: VNodeData) {
   }
 }
 
-function mergeHook (f1: any, f2: any): Function {
+function mergeHook (f1, f2) {
   const merged = (a, b) => {
     // flow complains about extra args which is why we use any
     f1(a, b)
@@ -247,7 +247,7 @@ function mergeHook (f1: any, f2: any): Function {
 
 // transform component v-model info (value and callback) into
 // prop and event handler respectively.
-function transformModel (options, data: any) {
+function transformModel (options, data) {
   const prop = (options.model && options.model.prop) || 'value'
   const event = (options.model && options.model.event) || 'input'
   ;(data.attrs || (data.attrs = {}))[prop] = data.model.value

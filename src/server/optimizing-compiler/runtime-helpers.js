@@ -1,21 +1,23 @@
 /* @flow */
 
-import { escape, isSSRUnsafeAttr } from 'web/server/util'
-import { isObject, extend } from 'shared/util'
-import { renderAttr } from 'web/server/modules/attrs'
-import { renderClass } from 'web/util/class'
-import { genStyle } from 'web/server/modules/style'
-import { normalizeStyleBinding } from 'web/util/style'
+// import { escape, isSSRUnsafeAttr } from 'web/server/util'
+import { escape, isSSRUnsafeAttr } from '../../platforms/web/server/util'
+// import { isObject, extend } from 'shared/util'
+import { isObject, extend } from '../../shared/util'
+// import { renderAttr } from 'web/server/modules/attrs'
+import { renderAttr } from '../../platforms/web/server/modules/attrs'
+// import { renderClass } from 'web/util/class'
+import { renderClass } from '../../platforms/web/util/class'
+// import { genStyle } from 'web/server/modules/style'
+import { genStyle } from '../../platforms/web/server/modules/style'
+// import { normalizeStyleBinding } from 'web/util/style'
+import { normalizeStyleBinding } from '../../platforms/web/util/style'
 
-import {
-  normalizeChildren,
-  simpleNormalizeChildren
-} from 'core/vdom/helpers/normalize-children'
+// import {normalizeChildren,simpleNormalizeChildren} from 'core/vdom/helpers/normalize-children'
+import {normalizeChildren,simpleNormalizeChildren} from '../../core/vdom/helpers/normalize-children'
 
-import {
-  propsToAttrMap,
-  isRenderableAttr
-} from 'web/server/util'
+// import {propsToAttrMap,isRenderableAttr} from 'web/server/util'
+import {propsToAttrMap,isRenderableAttr} from '../../platforms/web/server/util'
 
 const ssrHelpers = {
   _ssrEscape: escape,
@@ -28,7 +30,7 @@ const ssrHelpers = {
   _ssrStyle: renderSSRStyle
 }
 
-export function installSSRHelpers (vm: Component) {
+export function installSSRHelpers (vm) {
   if (vm._ssrNode) {
     return
   }
@@ -43,16 +45,16 @@ export function installSSRHelpers (vm: Component) {
 }
 
 class StringNode {
-  isString: boolean;
-  open: string;
-  close: ?string;
-  children: ?Array<any>;
+  isString;
+  open;
+  close;
+  children;
 
   constructor (
-    open: string,
-    close?: string,
-    children?: Array<any>,
-    normalizationType?: number
+    open,
+    close,
+    children,
+    normalizationType
   ) {
     this.isString = true
     this.open = open
@@ -70,22 +72,18 @@ class StringNode {
 }
 
 function renderStringNode (
-  open: string,
-  close?: string,
-  children?: Array<any>,
-  normalizationType?: number
-): StringNode {
+  open,
+  close,
+  children,
+  normalizationType
+) {
   return new StringNode(open, close, children, normalizationType)
 }
 
 function renderStringList (
-  val: any,
-  render: (
-    val: any,
-    keyOrIndex: string | number,
-    index?: number
-  ) => string
-): string {
+  val,
+  render
+) {
   let ret = ''
   let i, l, keys, key
   if (Array.isArray(val) || typeof val === 'string') {
@@ -106,7 +104,7 @@ function renderStringList (
   return ret
 }
 
-function renderAttrs (obj: Object): string {
+function renderAttrs (obj) {
   let res = ''
   for (const key in obj) {
     if (isSSRUnsafeAttr(key)) {
@@ -117,7 +115,7 @@ function renderAttrs (obj: Object): string {
   return res
 }
 
-function renderDOMProps (obj: Object): string {
+function renderDOMProps (obj) {
   let res = ''
   for (const key in obj) {
     const attr = propsToAttrMap[key] || key.toLowerCase()
@@ -129,18 +127,18 @@ function renderDOMProps (obj: Object): string {
 }
 
 function renderSSRClass (
-  staticClass: ?string,
-  dynamic: any
-): string {
+  staticClass,
+  dynamic
+) {
   const res = renderClass(staticClass, dynamic)
   return res === '' ? res : ` class="${escape(res)}"`
 }
 
 function renderSSRStyle (
-  staticStyle: ?Object,
-  dynamic: any,
-  extra: ?Object
-): string {
+  staticStyle,
+  dynamic,
+  extra
+) {
   const style = {}
   if (staticStyle) extend(style, staticStyle)
   if (dynamic) extend(style, normalizeStyleBinding(dynamic))

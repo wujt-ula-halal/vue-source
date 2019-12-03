@@ -1,20 +1,15 @@
 /* @flow */
 
-import {
-  isDef,
-  isUndef
-} from 'shared/util'
+// import {isDef,isUndef} from 'shared/util'
+import {isDef,isUndef} from '../../../../shared/util'
 
-import {
-  concat,
-  stringifyClass,
-  genClassForVnode
-} from 'web/util/index'
+// import {concat,stringifyClass,genClassForVnode} from 'web/util/index'
+import {concat,stringifyClass,genClassForVnode} from '../../../web/util/index'
 
-function updateClass (oldVnode: any, vnode: any) {
+function updateClass (oldVnode, vnode) {
   const el = vnode.elm
-  const data: VNodeData = vnode.data
-  const oldData: VNodeData = oldVnode.data
+  const data = vnode.data
+  const oldData = oldVnode.data
   if (
     isUndef(data.staticClass) &&
     isUndef(data.class) && (

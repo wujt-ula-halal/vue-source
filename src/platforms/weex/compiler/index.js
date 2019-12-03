@@ -1,7 +1,9 @@
 /* @flow */
 
-import { genStaticKeys } from 'shared/util'
-import { createCompiler } from 'compiler/index'
+// import { genStaticKeys } from 'shared/util'
+import { genStaticKeys } from '../../../shared/util'
+// import { createCompiler } from 'compiler/index'
+import { createCompiler } from '../../../compiler/index'
 
 import modules from './modules/index'
 import directives from './directives/index'
@@ -14,7 +16,7 @@ import {
   getTagNamespace
 } from '../util/element'
 
-export const baseOptions: WeexCompilerOptions = {
+export const baseOptions = {
   modules,
   directives,
   isUnaryTag,
@@ -30,9 +32,9 @@ export const baseOptions: WeexCompilerOptions = {
 const compiler = createCompiler(baseOptions)
 
 export function compile (
-  template: string,
-  options?: WeexCompilerOptions
-): WeexCompiledResult {
+  template,
+  options
+) {
   let generateAltRender = false
   if (options && options.recyclable === true) {
     generateAltRender = true

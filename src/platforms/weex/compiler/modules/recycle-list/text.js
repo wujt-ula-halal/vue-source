@@ -1,8 +1,9 @@
 /* @flow */
 
-import { addAttr } from 'compiler/helpers'
+// import { addAttr } from 'compiler/helpers'
+import { addAttr } from '../../../../../compiler/helpers'
 
-function genText (node: ASTNode) {
+function genText (node) {
   const value = node.type === 3
     ? node.text
     : node.type === 2
@@ -13,7 +14,7 @@ function genText (node: ASTNode) {
   return JSON.stringify(value)
 }
 
-export function postTransformText (el: ASTElement) {
+export function postTransformText (el) {
   // weex <text> can only contain text, so the parser
   // always generates a single child.
   if (el.children.length) {

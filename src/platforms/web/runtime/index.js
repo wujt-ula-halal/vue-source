@@ -1,19 +1,15 @@
 /* @flow */
 
-import Vue from 'core/index'
-import config from 'core/config'
-import { extend, noop } from 'shared/util'
-import { mountComponent } from 'core/instance/lifecycle'
-import { devtools, inBrowser } from 'core/util/index'
+// import Vue from 'core/index'
+import Vue from '../../../core/index'
+import config from '../../../core/config'
+// import { extend, noop } from 'shared/util'
+import { extend, noop } from '../../../shared/util'
+import { mountComponent } from '../../../core/instance/lifecycle'
+import { devtools, inBrowser } from '../../../core/util/index'
 
-import {
-  query,
-  mustUseProp,
-  isReservedTag,
-  isReservedAttr,
-  getTagNamespace,
-  isUnknownElement
-} from 'web/util/index'
+// import {query,mustUseProp,isReservedTag,isReservedAttr,getTagNamespace,isUnknownElement} from 'web/util/index'
+import {query,mustUseProp,isReservedTag,isReservedAttr,getTagNamespace,isUnknownElement} from '../../web/util/index'
 
 import { patch } from './patch'
 import platformDirectives from './directives/index'
@@ -35,9 +31,9 @@ Vue.prototype.__patch__ = inBrowser ? patch : noop
 
 // public mount method
 Vue.prototype.$mount = function (
-  el?: string | Element,
-  hydrating?: boolean
-): Component {
+  el,
+  hydrating
+) {
   el = el && inBrowser ? query(el) : undefined
   return mountComponent(this, el, hydrating)
 }

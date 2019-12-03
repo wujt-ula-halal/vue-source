@@ -1,11 +1,13 @@
 /* @flow */
 
-import VNode from 'core/vdom/vnode'
+// import VNode from 'core/vdom/vnode'
+import VNode from '../../../../core/vdom/vnode'
 import { renderAttr } from './attrs'
-import { isDef, isUndef, extend } from 'shared/util'
+// import { isDef, isUndef, extend } from 'shared/util'
+import { isDef, isUndef, extend } from '../../../../shared/util'
 import { propsToAttrMap, isRenderableAttr } from '../util'
 
-export default function renderDOMProps (node: VNodeWithData): string {
+export default function renderDOMProps (node) {
   let props = node.data.domProps
   let res = ''
 

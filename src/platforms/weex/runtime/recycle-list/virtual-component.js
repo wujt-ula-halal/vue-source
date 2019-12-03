@@ -2,22 +2,31 @@
 
 // https://github.com/Hanks10100/weex-native-directive/tree/master/component
 
-import { mergeOptions, isPlainObject, noop } from 'core/util/index'
-import Watcher from 'core/observer/watcher'
-import { initProxy } from 'core/instance/proxy'
-import { initState, getData } from 'core/instance/state'
-import { initRender } from 'core/instance/render'
-import { initEvents } from 'core/instance/events'
-import { initProvide, initInjections } from 'core/instance/inject'
-import { initLifecycle, callHook } from 'core/instance/lifecycle'
-import { initInternalComponent, resolveConstructorOptions } from 'core/instance/init'
+// import { mergeOptions, isPlainObject, noop } from 'core/util/index'
+import { mergeOptions, isPlainObject, noop } from '../../../../core/util/index'
+// import Watcher from 'core/observer/watcher'
+import Watcher from '../../../../core/observer/watcher'
+// import { initProxy } from 'core/instance/proxy'
+import { initProxy } from '../../../../core/instance/proxy'
+// import { initState, getData } from 'core/instance/state'
+import { initState, getData } from '../../../../core/instance/state'
+// import { initRender } from 'core/instance/render'
+import { initRender } from '../../../../core/instance/render'
+// import { initEvents } from 'core/instance/events'
+import { initEvents } from '../../../../core/instance/events'
+// import { initProvide, initInjections } from 'core/instance/inject'
+import { initProvide, initInjections } from '../../../../core/instance/inject'
+// import { initLifecycle, callHook } from 'core/instance/lifecycle'
+import { initLifecycle, callHook } from '../../../../core/instance/lifecycle'
+// import { initInternalComponent, resolveConstructorOptions } from 'core/instance/init'
+import { initInternalComponent, resolveConstructorOptions } from '../../../../core/instance/init'
 import { registerComponentHook, updateComponentData } from '../../util/index'
 
 let uid = 0
 
 // override Vue.prototype._init
-function initVirtualComponent (options: Object = {}) {
-  const vm: Component = this
+function initVirtualComponent (options = {}) {
+  const vm = this
   const componentId = options.componentId
 
   // virtual component uid
@@ -83,8 +92,8 @@ function initVirtualComponent (options: Object = {}) {
 }
 
 // override Vue.prototype._update
-function updateVirtualComponent (vnode?: VNode) {
-  const vm: Component = this
+function updateVirtualComponent (vnode) {
+  const vm = this
   const componentId = vm.$options.componentId
   if (vm._isMounted) {
     callHook(vm, 'beforeUpdate')
@@ -100,7 +109,7 @@ function updateVirtualComponent (vnode?: VNode) {
 }
 
 // listening on native callback
-export function resolveVirtualComponent (vnode: MountedComponentVNode): VNode {
+export function resolveVirtualComponent (vnode) {
   const BaseCtor = vnode.componentOptions.Ctor
   const VirtualComponent = BaseCtor.extend({})
   const cid = VirtualComponent.cid

@@ -2,28 +2,17 @@
 
 import { warn } from './debug'
 import { observe, toggleObserving, shouldObserve } from '../observer/index'
-import {
-  hasOwn,
-  isObject,
-  toRawType,
-  hyphenate,
-  capitalize,
-  isPlainObject
-} from 'shared/util'
+// import {hasOwn,isObject,toRawType,hyphenate,capitalize,isPlainObject} from 'shared/util'
+import {hasOwn,isObject,toRawType,hyphenate,capitalize,isPlainObject} from '../../shared/util'
 
-type PropOptions = {
-  type: Function | Array<Function> | null,
-  default: any,
-  required: ?boolean,
-  validator: ?Function
-};
+
 
 export function validateProp (
-  key: string,
-  propOptions: Object,
-  propsData: Object,
-  vm?: Component
-): any {
+  key,
+  propOptions,
+  propsData,
+  vm
+) {
   const prop = propOptions[key]
   const absent = !hasOwn(propsData, key)
   let value = propsData[key]
@@ -64,7 +53,7 @@ export function validateProp (
 /**
  * Get the default value of a prop.
  */
-function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): any {
+function getPropDefaultValue (vm, prop, key) {
   // no default, return undefined
   if (!hasOwn(prop, 'default')) {
     return undefined
@@ -98,11 +87,11 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
  * Assert whether a prop is valid.
  */
 function assertProp (
-  prop: PropOptions,
-  name: string,
-  value: any,
-  vm: ?Component,
-  absent: boolean
+  prop,
+  name,
+  value,
+  vm,
+  absent
 ) {
   if (prop.required && absent) {
     warn(
@@ -148,10 +137,7 @@ function assertProp (
 
 const simpleCheckRE = /^(String|Number|Boolean|Function|Symbol)$/
 
-function assertType (value: any, type: Function): {
-  valid: boolean;
-  expectedType: string;
-} {
+function assertType (value, type) {
   let valid
   const expectedType = getType(type)
   if (simpleCheckRE.test(expectedType)) {
@@ -188,7 +174,7 @@ function isSameType (a, b) {
   return getType(a) === getType(b)
 }
 
-function getTypeIndex (type, expectedTypes): number {
+function getTypeIndex (type, expectedTypes) {
   if (!Array.isArray(expectedTypes)) {
     return isSameType(expectedTypes, type) ? 0 : -1
   }

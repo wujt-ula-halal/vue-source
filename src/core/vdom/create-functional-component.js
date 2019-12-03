@@ -18,11 +18,11 @@ import {
 } from '../util/index'
 
 export function FunctionalRenderContext (
-  data: VNodeData,
-  props: Object,
-  children: ?Array<VNode>,
-  parent: Component,
-  Ctor: Class<Component>
+  data,
+  props,
+  children,
+  parent,
+  Ctor
 ) {
   const options = Ctor.options
   // ensure the createElement function in functional components
@@ -64,7 +64,7 @@ export function FunctionalRenderContext (
     get () {
       return normalizeScopedSlots(data.scopedSlots, this.slots())
     }
-  }: any))
+  }))
 
   // support for compiled functional template
   if (isCompiled) {
@@ -92,12 +92,12 @@ export function FunctionalRenderContext (
 installRenderHelpers(FunctionalRenderContext.prototype)
 
 export function createFunctionalComponent (
-  Ctor: Class<Component>,
-  propsData: ?Object,
-  data: VNodeData,
-  contextVm: Component,
-  children: ?Array<VNode>
-): VNode | Array<VNode> | void {
+  Ctor,
+  propsData,
+  data,
+  contextVm,
+  children
+) {
   const options = Ctor.options
   const props = {}
   const propOptions = options.props

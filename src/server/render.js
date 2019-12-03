@@ -1,19 +1,23 @@
 /* @flow */
 
-import { escape } from 'web/server/util'
-import { SSR_ATTR } from 'shared/constants'
+// import { escape } from 'web/server/util'
+import { escape } from '../platforms/web/server/util'
+// import { SSR_ATTR } from 'shared/constants'
+import { SSR_ATTR } from '../shared/constants'
 import { RenderContext } from './render-context'
-import { resolveAsset } from 'core/util/options'
-import { generateComponentTrace } from 'core/util/debug'
-import { ssrCompileToFunctions } from 'web/server/compiler'
+// import { resolveAsset } from 'core/util/options'
+import { resolveAsset } from '../core/util/options'
+// import { generateComponentTrace } from 'core/util/debug'
+import { generateComponentTrace } from '../core/util/debug'
+// import { ssrCompileToFunctions } from 'web/server/compiler'
+import { ssrCompileToFunctions } from '../platforms/web/server/compiler'
 import { installSSRHelpers } from './optimizing-compiler/runtime-helpers'
 
-import { isDef, isUndef, isTrue } from 'shared/util'
+// import { isDef, isUndef, isTrue } from 'shared/util'
+import { isDef, isUndef, isTrue } from '../shared/util'
 
-import {
-  createComponent,
-  createComponentInstanceForVnode
-} from 'core/vdom/create-component'
+// import {createComponent,createComponentInstanceForVnode} from 'core/vdom/create-component'
+import {createComponent,createComponentInstanceForVnode} from '../core/vdom/create-component'
 
 let warned = Object.create(null)
 const warnOnce = msg => {
@@ -218,7 +222,7 @@ function renderAsyncComponent (node, isRoot, context) {
     }
     const { data, children, tag } = node.asyncMeta
     const nodeContext = node.asyncMeta.context
-    const resolvedNode: any = createComponent(
+    const resolvedNode = createComponent(
       comp,
       data,
       nodeContext,
@@ -279,7 +283,7 @@ function renderStringNode (el, context) {
   if (isUndef(el.children) || el.children.length === 0) {
     write(el.open + (el.close || ''), next)
   } else {
-    const children: Array<VNode> = el.children
+    const children = el.children
     context.renderStates.push({
       type: 'Element',
       children,
@@ -311,7 +315,7 @@ function renderElement (el, isRoot, context) {
   } else if (isUndef(el.children) || el.children.length === 0) {
     write(startTag + endTag, next)
   } else {
-    const children: Array<VNode> = el.children
+    const children = el.children
     context.renderStates.push({
       type: 'Element',
       children,
@@ -323,13 +327,13 @@ function renderElement (el, isRoot, context) {
   }
 }
 
-function hasAncestorData (node: VNode) {
+function hasAncestorData (node) {
   const parentNode = node.parent
   return isDef(parentNode) && (isDef(parentNode.data) || hasAncestorData(parentNode))
 }
 
-function getVShowDirectiveInfo (node: VNode): ?VNodeDirective {
-  let dir: VNodeDirective
+function getVShowDirectiveInfo (node) {
+  let dir
   let tmp
 
   while (isDef(node)) {
@@ -344,7 +348,7 @@ function getVShowDirectiveInfo (node: VNode): ?VNodeDirective {
   return dir
 }
 
-function renderStartingTag (node: VNode, context) {
+function renderStartingTag (node, context) {
   let markup = `<${node.tag}`
   const { directives, modules } = context
 
@@ -391,7 +395,7 @@ function renderStartingTag (node: VNode, context) {
     activeInstance !== node.context &&
     isDef(scopeId = activeInstance.$options._scopeId)
   ) {
-    markup += ` ${(scopeId: any)}`
+    markup += ` ${(scopeId)}`
   }
   if (isDef(node.fnScopeId)) {
     markup += ` ${node.fnScopeId}`
@@ -407,16 +411,16 @@ function renderStartingTag (node: VNode, context) {
 }
 
 export function createRenderFunction (
-  modules: Array<(node: VNode) => ?string>,
-  directives: Object,
-  isUnaryTag: Function,
-  cache: any
+  modules,
+  directives,
+  isUnaryTag,
+  cache
 ) {
   return function render (
-    component: Component,
-    write: (text: string, next: Function) => void,
-    userContext: ?Object,
-    done: Function
+    component,
+    write,
+    userContext,
+    done
   ) {
     warned = Object.create(null)
     const context = new RenderContext({

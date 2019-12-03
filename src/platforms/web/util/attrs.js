@@ -1,6 +1,7 @@
 /* @flow */
 
-import { makeMap } from 'shared/util'
+// import { makeMap } from 'shared/util'
+import { makeMap } from '../../../shared/util'
 
 // these are reserved for web because they are directly compiled away
 // during template compilation
@@ -42,14 +43,14 @@ export const isBooleanAttr = makeMap(
 
 export const xlinkNS = 'http://www.w3.org/1999/xlink'
 
-export const isXlink = (name: string): boolean => {
+export const isXlink = (name) => {
   return name.charAt(5) === ':' && name.slice(0, 5) === 'xlink'
 }
 
-export const getXlinkProp = (name: string): string => {
+export const getXlinkProp = (name) => {
   return isXlink(name) ? name.slice(6, name.length) : ''
 }
 
-export const isFalsyAttrValue = (val: any): boolean => {
+export const isFalsyAttrValue = (val) => {
   return val == null || val === false
 }

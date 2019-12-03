@@ -1,10 +1,12 @@
 /* @flow */
 
-import { inBrowser, isIE9 } from 'core/util/index'
+// import { inBrowser, isIE9 } from 'core/util/index'
+import { inBrowser, isIE9 } from '../../../core/util/index'
 import { addClass, removeClass } from './class-util'
-import { remove, extend, cached } from 'shared/util'
+// import { remove, extend, cached } from 'shared/util'
+import { remove, extend, cached } from '../../../shared/util'
 
-export function resolveTransition (def?: string | Object): ?Object {
+export function resolveTransition (def) {
   if (!def) {
     return
   }
@@ -21,7 +23,7 @@ export function resolveTransition (def?: string | Object): ?Object {
   }
 }
 
-const autoCssTransition: (name: string) => Object = cached(name => {
+const autoCssTransition = cached(name => {
   return {
     enterClass: `${name}-enter`,
     enterToClass: `${name}-enter-to`,
@@ -64,13 +66,13 @@ const raf = inBrowser
     : setTimeout
   : /* istanbul ignore next */ fn => fn()
 
-export function nextFrame (fn: Function) {
+export function nextFrame (fn) {
   raf(() => {
     raf(fn)
   })
 }
 
-export function addTransitionClass (el: any, cls: string) {
+export function addTransitionClass (el, cls) {
   const transitionClasses = el._transitionClasses || (el._transitionClasses = [])
   if (transitionClasses.indexOf(cls) < 0) {
     transitionClasses.push(cls)
@@ -78,7 +80,7 @@ export function addTransitionClass (el: any, cls: string) {
   }
 }
 
-export function removeTransitionClass (el: any, cls: string) {
+export function removeTransitionClass (el, cls) {
   if (el._transitionClasses) {
     remove(el._transitionClasses, cls)
   }
@@ -86,13 +88,13 @@ export function removeTransitionClass (el: any, cls: string) {
 }
 
 export function whenTransitionEnds (
-  el: Element,
-  expectedType: ?string,
-  cb: Function
+  el,
+  expectedType,
+  cb
 ) {
   const { type, timeout, propCount } = getTransitionInfo(el, expectedType)
   if (!type) return cb()
-  const event: string = type === TRANSITION ? transitionEndEvent : animationEndEvent
+  const event = type === TRANSITION ? transitionEndEvent : animationEndEvent
   let ended = 0
   const end = () => {
     el.removeEventListener(event, onEnd)
@@ -113,24 +115,40 @@ export function whenTransitionEnds (
   el.addEventListener(event, onEnd)
 }
 
+
+
+function getTimeout (delays, durations) {
+  /* istanbul ignore next */
+  while (delays.length < durations.length) {
+    delays = delays.concat(delays)
+  }
+
+  return Math.max.apply(null, durations.map((d, i) => {
+    return toMs(d) + toMs(delays[i])
+  }))
+}
+
+// Old versions of Chromium (below 61.0.3163.100) formats floating pointer numbers
+// in a locale-dependent way, using a comma instead of a dot.
+// If comma is not replaced with a dot, the input will be rounded down (i.e. acting
+// as a floor function) causing unexpected behaviors
+function toMs (s) {
+  return Number(s.slice(0, -1).replace(',', '.')) * 1000
+}
+
 const transformRE = /\b(transform|all)(,|$)/
 
-export function getTransitionInfo (el: Element, expectedType?: ?string): {
-  type: ?string;
-  propCount: number;
-  timeout: number;
-  hasTransform: boolean;
-} {
-  const styles: any = window.getComputedStyle(el)
+export function getTransitionInfo (el, expectedType) {
+  const styles = window.getComputedStyle(el)
   // JSDOM may return undefined for transition properties
-  const transitionDelays: Array<string> = (styles[transitionProp + 'Delay'] || '').split(', ')
-  const transitionDurations: Array<string> = (styles[transitionProp + 'Duration'] || '').split(', ')
-  const transitionTimeout: number = getTimeout(transitionDelays, transitionDurations)
-  const animationDelays: Array<string> = (styles[animationProp + 'Delay'] || '').split(', ')
-  const animationDurations: Array<string> = (styles[animationProp + 'Duration'] || '').split(', ')
-  const animationTimeout: number = getTimeout(animationDelays, animationDurations)
+  const transitionDelays = (styles[transitionProp + 'Delay'] || '').split(', ')
+  const transitionDurations = (styles[transitionProp + 'Duration'] || '').split(', ')
+  const transitionTimeout = getTimeout(transitionDelays, transitionDurations)
+  const animationDelays = (styles[animationProp + 'Delay'] || '').split(', ')
+  const animationDurations = (styles[animationProp + 'Duration'] || '').split(', ')
+  const animationTimeout = getTimeout(animationDelays, animationDurations)
 
-  let type: ?string
+  let type
   let timeout = 0
   let propCount = 0
   /* istanbul ignore if */
@@ -159,7 +177,7 @@ export function getTransitionInfo (el: Element, expectedType?: ?string): {
         : animationDurations.length
       : 0
   }
-  const hasTransform: boolean =
+  const hasTransform =
     type === TRANSITION &&
     transformRE.test(styles[transitionProp + 'Property'])
   return {
@@ -168,23 +186,4 @@ export function getTransitionInfo (el: Element, expectedType?: ?string): {
     propCount,
     hasTransform
   }
-}
-
-function getTimeout (delays: Array<string>, durations: Array<string>): number {
-  /* istanbul ignore next */
-  while (delays.length < durations.length) {
-    delays = delays.concat(delays)
-  }
-
-  return Math.max.apply(null, durations.map((d, i) => {
-    return toMs(d) + toMs(delays[i])
-  }))
-}
-
-// Old versions of Chromium (below 61.0.3163.100) formats floating pointer numbers
-// in a locale-dependent way, using a comma instead of a dot.
-// If comma is not replaced with a dot, the input will be rounded down (i.e. acting
-// as a floor function) causing unexpected behaviors
-function toMs (s: string): number {
-  return Number(s.slice(0, -1).replace(',', '.')) * 1000
 }

@@ -1,21 +1,14 @@
 /* @flow */
 
-import {
-  warn,
-  once,
-  isDef,
-  isUndef,
-  isTrue,
-  isObject,
-  hasSymbol,
-  isPromise,
-  remove
-} from 'core/util/index'
+// import {warn,once,isDef,isUndef,isTrue,isObject,hasSymbol,isPromise,remove} from 'core/util/index'
+import {warn,once,isDef,isUndef,isTrue,isObject,hasSymbol,isPromise,remove} from '../../../core/util/index'
 
-import { createEmptyVNode } from 'core/vdom/vnode'
-import { currentRenderingInstance } from 'core/instance/render'
+// import { createEmptyVNode } from 'core/vdom/vnode'
+import { createEmptyVNode } from '../../../core/vdom/vnode'
+// import { currentRenderingInstance } from 'core/instance/render'
+import { currentRenderingInstance } from '../../../core/instance/render'
 
-function ensureCtor (comp: any, base) {
+function ensureCtor (comp, base) {
   if (
     comp.__esModule ||
     (hasSymbol && comp[Symbol.toStringTag] === 'Module')
@@ -28,12 +21,12 @@ function ensureCtor (comp: any, base) {
 }
 
 export function createAsyncPlaceholder (
-  factory: Function,
-  data: ?VNodeData,
-  context: Component,
-  children: ?Array<VNode>,
-  tag: ?string
-): VNode {
+  factory,
+  data,
+  context,
+  children,
+  tag
+) {
   const node = createEmptyVNode()
   node.asyncFactory = factory
   node.asyncMeta = { data, context, children, tag }
@@ -41,9 +34,9 @@ export function createAsyncPlaceholder (
 }
 
 export function resolveAsyncComponent (
-  factory: Function,
-  baseCtor: Class<Component>
-): Class<Component> | void {
+  factory,
+  baseCtor
+) {
   if (isTrue(factory.error) && isDef(factory.errorComp)) {
     return factory.errorComp
   }
@@ -68,11 +61,11 @@ export function resolveAsyncComponent (
     let timerLoading = null
     let timerTimeout = null
 
-    ;(owner: any).$on('hook:destroyed', () => remove(owners, owner))
+    ;(owner).$on('hook:destroyed', () => remove(owners, owner))
 
-    const forceRender = (renderCompleted: boolean) => {
+    const forceRender = (renderCompleted) => {
       for (let i = 0, l = owners.length; i < l; i++) {
-        (owners[i]: any).$forceUpdate()
+        (owners[i]).$forceUpdate()
       }
 
       if (renderCompleted) {
@@ -88,7 +81,7 @@ export function resolveAsyncComponent (
       }
     }
 
-    const resolve = once((res: Object | Class<Component>) => {
+    const resolve = once((res) => {
       // cache resolved
       factory.resolved = ensureCtor(res, baseCtor)
       // invoke callbacks only if this is not a synchronous resolve

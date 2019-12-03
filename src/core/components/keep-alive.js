@@ -1,15 +1,16 @@
 /* @flow */
 
-import { isRegExp, remove } from 'shared/util'
-import { getFirstComponentChild } from 'core/vdom/helpers/index'
+// import { isRegExp, remove } from 'shared/util'
+import { isRegExp, remove } from '../../shared/util'
+// import { getFirstComponentChild } from 'core/vdom/helpers/index'
+import { getFirstComponentChild } from '../vdom/helpers/index'
 
-type VNodeCache = { [key: string]: ?VNode };
 
-function getComponentName (opts: ?VNodeComponentOptions): ?string {
+function getComponentName (opts) {
   return opts && (opts.Ctor.options.name || opts.tag)
 }
 
-function matches (pattern: string | RegExp | Array<string>, name: string): boolean {
+function matches (pattern, name) {
   if (Array.isArray(pattern)) {
     return pattern.indexOf(name) > -1
   } else if (typeof pattern === 'string') {
@@ -21,12 +22,12 @@ function matches (pattern: string | RegExp | Array<string>, name: string): boole
   return false
 }
 
-function pruneCache (keepAliveInstance: any, filter: Function) {
+function pruneCache (keepAliveInstance, filter) {
   const { cache, keys, _vnode } = keepAliveInstance
   for (const key in cache) {
-    const cachedNode: ?VNode = cache[key]
+    const cachedNode = cache[key]
     if (cachedNode) {
-      const name: ?string = getComponentName(cachedNode.componentOptions)
+      const name = getComponentName(cachedNode.componentOptions)
       if (name && !filter(name)) {
         pruneCacheEntry(cache, key, keys, _vnode)
       }
@@ -35,10 +36,10 @@ function pruneCache (keepAliveInstance: any, filter: Function) {
 }
 
 function pruneCacheEntry (
-  cache: VNodeCache,
-  key: string,
-  keys: Array<string>,
-  current?: VNode
+  cache,
+  key,
+  keys,
+  current
 ) {
   const cached = cache[key]
   if (cached && (!current || cached.tag !== current.tag)) {
@@ -48,7 +49,7 @@ function pruneCacheEntry (
   remove(keys, key)
 }
 
-const patternTypes: Array<Function> = [String, RegExp, Array]
+const patternTypes = [String, RegExp, Array]
 
 export default {
   name: 'keep-alive',
@@ -82,11 +83,11 @@ export default {
 
   render () {
     const slot = this.$slots.default
-    const vnode: VNode = getFirstComponentChild(slot)
-    const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
+    const vnode = getFirstComponentChild(slot)
+    const componentOptions = vnode && vnode.componentOptions
     if (componentOptions) {
       // check pattern
-      const name: ?string = getComponentName(componentOptions)
+      const name = getComponentName(componentOptions)
       const { include, exclude } = this
       if (
         // not included
@@ -98,7 +99,7 @@ export default {
       }
 
       const { cache, keys } = this
-      const key: ?string = vnode.key == null
+      const key = vnode.key == null
         // same constructor may get registered as different local components
         // so cid alone is not enough (#3269)
         ? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')

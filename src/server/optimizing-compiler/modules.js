@@ -6,24 +6,19 @@ import {
   EXPRESSION
 } from './codegen'
 
-import {
-  propsToAttrMap,
-  isRenderableAttr
-} from 'web/server/util'
+// import {propsToAttrMap,isRenderableAttr} from 'web/server/util'
+import {propsToAttrMap,isRenderableAttr} from '../../platforms/web/server/util'
 
-import {
-  isBooleanAttr,
-  isEnumeratedAttr
-} from 'web/util/attrs'
+// import {isBooleanAttr,isEnumeratedAttr} from 'web/util/attrs'
+import {isBooleanAttr,isEnumeratedAttr} from '../../platforms/web/util/attrs'
 
-import type { StringSegment } from './codegen'
-import type { CodegenState } from 'compiler/codegen/index'
+
 
 const plainStringRE = /^"(?:[^"\\]|\\.)*"$|^'(?:[^'\\]|\\.)*'$/
 
 // let the model AST transform translate v-model into appropriate
 // props bindings
-export function applyModelTransform (el: ASTElement, state: CodegenState) {
+export function applyModelTransform (el, state) {
   if (el.directives) {
     for (let i = 0; i < el.directives.length; i++) {
       const dir = el.directives[i]
@@ -40,15 +35,15 @@ export function applyModelTransform (el: ASTElement, state: CodegenState) {
 }
 
 export function genAttrSegments (
-  attrs: Array<ASTAttr>
-): Array<StringSegment> {
+  attrs
+) {
   return attrs.map(({ name, value }) => genAttrSegment(name, value))
 }
 
 export function genDOMPropSegments (
-  props: Array<ASTAttr>,
-  attrs: ?Array<ASTAttr>
-): Array<StringSegment> {
+  props,
+  attrs
+) {
   const segments = []
   props.forEach(({ name, value }) => {
     name = propsToAttrMap[name] || name.toLowerCase()
@@ -61,7 +56,7 @@ export function genDOMPropSegments (
   return segments
 }
 
-function genAttrSegment (name: string, value: string): StringSegment {
+function genAttrSegment (name, value) {
   if (plainStringRE.test(value)) {
     // force double quote
     value = value.replace(/^'|'$/g, '"')
@@ -86,9 +81,9 @@ function genAttrSegment (name: string, value: string): StringSegment {
 }
 
 export function genClassSegments (
-  staticClass: ?string,
-  classBinding: ?string
-): Array<StringSegment> {
+  staticClass,
+  classBinding
+) {
   if (staticClass && !classBinding) {
     return [{ type: RAW, value: ` class="${JSON.parse(staticClass)}"` }]
   } else {
@@ -100,11 +95,11 @@ export function genClassSegments (
 }
 
 export function genStyleSegments (
-  staticStyle: ?string,
-  parsedStaticStyle: ?string,
-  styleBinding: ?string,
-  vShowExpression: ?string
-): Array<StringSegment> {
+  staticStyle,
+  parsedStaticStyle,
+  styleBinding,
+  vShowExpression
+) {
   if (staticStyle && !styleBinding && !vShowExpression) {
     return [{ type: RAW, value: ` style=${JSON.stringify(staticStyle)}` }]
   } else {

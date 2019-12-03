@@ -3,10 +3,10 @@
 const range = 2
 
 export function generateCodeFrame (
-  source: string,
-  start: number = 0,
-  end: number = source.length
-): string {
+  source,
+  start = 0,
+  end = source.length
+) {
   const lines = source.split(/\r?\n/)
   let count = 0
   const res = []

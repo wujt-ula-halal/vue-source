@@ -1,19 +1,13 @@
 /* @flow */
 
-import {
-  tip,
-  hasOwn,
-  isDef,
-  isUndef,
-  hyphenate,
-  formatComponentName
-} from 'core/util/index'
+// import {tip,hasOwn,isDef,isUndef,hyphenate,formatComponentName} from 'core/util/index'
+import {tip,hasOwn,isDef,isUndef,hyphenate,formatComponentName} from '../../../core/util/index'
 
 export function extractPropsFromVNodeData (
-  data: VNodeData,
-  Ctor: Class<Component>,
-  tag?: string
-): ?Object {
+  data,
+  Ctor,
+  tag
+) {
   // we are only extracting raw values here.
   // validation and default values are handled in the child
   // component itself.
@@ -50,12 +44,12 @@ export function extractPropsFromVNodeData (
 }
 
 function checkProp (
-  res: Object,
-  hash: ?Object,
-  key: string,
-  altKey: string,
-  preserve: boolean
-): boolean {
+  res,
+  hash,
+  key,
+  altKey,
+  preserve
+) {
   if (isDef(hash)) {
     if (hasOwn(hash, key)) {
       res[key] = hash[key]

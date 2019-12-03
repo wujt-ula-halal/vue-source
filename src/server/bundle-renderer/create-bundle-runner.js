@@ -1,4 +1,5 @@
-import { isPlainObject } from 'shared/util'
+// import { isPlainObject } from 'shared/util'
+import { isPlainObject } from '../../shared/util'
 
 const vm = require('vm')
 const path = require('path')

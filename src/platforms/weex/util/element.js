@@ -4,7 +4,8 @@
 // makeMap() due to potential side effects, so these variables end up
 // bloating the web builds.
 
-import { makeMap, noop } from 'shared/util'
+// import { makeMap, noop } from 'shared/util'
+import { makeMap, noop } from '../../../shared/util'
 
 export const isReservedTag = makeMap(
   'template,script,style,element,content,slot,link,meta,svg,view,' +
@@ -33,17 +34,17 @@ export const isUnaryTag = makeMap(
   true
 )
 
-export function mustUseProp (): boolean {
+export function mustUseProp () {
   return false
 }
 
-export function getTagNamespace (): void { }
+export function getTagNamespace () { }
 
-export function isUnknownElement (): boolean {
+export function isUnknownElement () {
   return false
 }
 
-export function query (el: string | Element, document: Object) {
+export function query (el, document) {
   // document is injected by weex factory wrapper
   const placeholder = document.createComment('root')
   placeholder.hasAttribute = placeholder.removeAttribute = noop // hack for patch

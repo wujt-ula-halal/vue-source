@@ -3,10 +3,14 @@
  * properties to Elements.
  */
 
-import { isTextInputType } from 'web/util/element'
-import { looseEqual, looseIndexOf } from 'shared/util'
-import { mergeVNodeHook } from 'core/vdom/helpers/index'
-import { warn, isIE9, isIE, isEdge } from 'core/util/index'
+// import { isTextInputType } from 'web/util/element'
+import { isTextInputType } from '../../../web/util/element'
+// import { looseEqual, looseIndexOf } from 'shared/util'
+import { looseEqual, looseIndexOf } from '../../../../shared/util'
+// import { mergeVNodeHook } from 'core/vdom/helpers/index'
+import { mergeVNodeHook } from '../../../../core/vdom/helpers/index'
+// import { warn, isIE9, isIE, isEdge } from 'core/util/index'
+import { warn, isIE9, isIE, isEdge } from '../../../../core/util/index'
 
 /* istanbul ignore if */
 if (isIE9) {

@@ -1,7 +1,6 @@
 /* @flow */
 
 import { _Set as Set, isObject } from '../util/index'
-import type { SimpleSet } from '../util/index'
 import VNode from '../vdom/vnode'
 
 const seenObjects = new Set()
@@ -11,12 +10,12 @@ const seenObjects = new Set()
  * getters, so that every nested property inside the object
  * is collected as a "deep" dependency.
  */
-export function traverse (val: any) {
+export function traverse (val) {
   _traverse(val, seenObjects)
   seenObjects.clear()
 }
 
-function _traverse (val: any, seen: SimpleSet) {
+function _traverse (val, seen) {
   let i, keys
   const isA = Array.isArray(val)
   if ((!isA && !isObject(val)) || Object.isFrozen(val) || val instanceof VNode) {

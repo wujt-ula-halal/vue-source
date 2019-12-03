@@ -12,14 +12,15 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 
 let uid = 0
 
-export function initMixin (Vue: Class<Component>) {
-  Vue.prototype._init = function (options?: Object) {
-    const vm: Component = this
+export function initMixin (Vue) {
+  Vue.prototype._init = function (options) {
+    const vm = this
     // a uid
     vm._uid = uid++
 
     let startTag, endTag
     /* istanbul ignore if */
+    // performance 开启浏览器性能追踪
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       startTag = `vue-perf-start:${vm._uid}`
       endTag = `vue-perf-end:${vm._uid}`
@@ -71,7 +72,7 @@ export function initMixin (Vue: Class<Component>) {
   }
 }
 
-export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
+export function initInternalComponent (vm, options) {
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
   const parentVnode = options._parentVnode
@@ -90,7 +91,7 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   }
 }
 
-export function resolveConstructorOptions (Ctor: Class<Component>) {
+export function resolveConstructorOptions (Ctor) {
   let options = Ctor.options
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)
@@ -114,7 +115,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
   return options
 }
 
-function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
+function resolveModifiedOptions (Ctor) {
   let modified
   const latest = Ctor.options
   const sealed = Ctor.sealedOptions

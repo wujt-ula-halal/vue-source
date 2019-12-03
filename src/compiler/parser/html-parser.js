@@ -9,9 +9,12 @@
  * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
  */
 
-import { makeMap, no } from 'shared/util'
-import { isNonPhrasingTag } from 'web/compiler/util'
-import { unicodeRegExp } from 'core/util/lang'
+// import { makeMap, no } from 'shared/util'
+import { makeMap, no } from '../../shared/util'
+// import { isNonPhrasingTag } from 'web/compiler/util'
+import { isNonPhrasingTag } from '../../platforms/web/util'
+// import { unicodeRegExp } from 'core/util/lang'
+import { unicodeRegExp } from '../../core/util/lang'
 
 // Regular Expressions for parsing tags and attributes
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/

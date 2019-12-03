@@ -7,50 +7,20 @@ import { isJS, isCSS } from '../util'
 import TemplateStream from './template-stream'
 import { parseTemplate } from './parse-template'
 import { createMapper } from './create-async-file-mapper'
-import type { ParsedTemplate } from './parse-template'
-import type { AsyncFileMapper } from './create-async-file-mapper'
 
-type TemplateRendererOptions = {
-  template?: string | (content: string, context: any) => string;
-  inject?: boolean;
-  clientManifest?: ClientManifest;
-  shouldPreload?: (file: string, type: string) => boolean;
-  shouldPrefetch?: (file: string, type: string) => boolean;
-  serializer?: Function;
-};
-
-export type ClientManifest = {
-  publicPath: string;
-  all: Array<string>;
-  initial: Array<string>;
-  async: Array<string>;
-  modules: {
-    [id: string]: Array<number>;
-  },
-  hasNoCssVersion?: {
-    [file: string]: boolean;
-  }
-};
-
-type Resource = {
-  file: string;
-  extension: string;
-  fileWithoutQuery: string;
-  asType: string;
-};
 
 export default class TemplateRenderer {
-  options: TemplateRendererOptions;
-  inject: boolean;
-  parsedTemplate: ParsedTemplate | Function | null;
-  publicPath: string;
-  clientManifest: ClientManifest;
-  preloadFiles: Array<Resource>;
-  prefetchFiles: Array<Resource>;
-  mapFiles: AsyncFileMapper;
-  serialize: Function;
+  options;
+  inject;
+  parsedTemplate;
+  publicPath;
+  clientManifest;
+  preloadFiles;
+  prefetchFiles;
+  mapFiles;
+  serialize;
 
-  constructor (options: TemplateRendererOptions) {
+  constructor (options) {
     this.options = options
     this.inject = options.inject !== false
     // if no template option is provided, the renderer is created
@@ -83,8 +53,8 @@ export default class TemplateRenderer {
     }
   }
 
-  bindRenderFns (context: Object) {
-    const renderer: any = this
+  bindRenderFns (context) {
+    const renderer = this
     ;['ResourceHints', 'State', 'Scripts', 'Styles'].forEach(type => {
       context[`render${type}`] = renderer[`render${type}`].bind(renderer, context)
     })
@@ -93,7 +63,7 @@ export default class TemplateRenderer {
   }
 
   // render synchronously given rendered app content and render context
-  render (content: string, context: ?Object): string | Promise<string> {
+  render (content, context) {
     const template = this.parsedTemplate
     if (!template) {
       throw new Error('render cannot be called without a template.')
@@ -126,7 +96,7 @@ export default class TemplateRenderer {
     }
   }
 
-  renderStyles (context: Object): string {
+  renderStyles (context) {
     const initial = this.preloadFiles || []
     const async = this.getUsedAsyncFiles(context) || []
     const cssFiles = initial.concat(async).filter(({ file }) => isCSS(file))
@@ -141,11 +111,11 @@ export default class TemplateRenderer {
     )
   }
 
-  renderResourceHints (context: Object): string {
+  renderResourceHints (context) {
     return this.renderPreloadLinks(context) + this.renderPrefetchLinks(context)
   }
 
-  getPreloadFiles (context: Object): Array<Resource> {
+  getPreloadFiles (context) {
     const usedAsyncFiles = this.getUsedAsyncFiles(context)
     if (this.preloadFiles || usedAsyncFiles) {
       return (this.preloadFiles || []).concat(usedAsyncFiles || [])
@@ -154,7 +124,7 @@ export default class TemplateRenderer {
     }
   }
 
-  renderPreloadLinks (context: Object): string {
+  renderPreloadLinks (context) {
     const files = this.getPreloadFiles(context)
     const shouldPreload = this.options.shouldPreload
     if (files.length) {
@@ -184,7 +154,7 @@ export default class TemplateRenderer {
     }
   }
 
-  renderPrefetchLinks (context: Object): string {
+  renderPrefetchLinks (context) {
     const shouldPrefetch = this.options.shouldPrefetch
     if (this.prefetchFiles) {
       const usedAsyncFiles = this.getUsedAsyncFiles(context)
@@ -205,7 +175,7 @@ export default class TemplateRenderer {
     }
   }
 
-  renderState (context: Object, options?: Object): string {
+  renderState (context, options) {
     const {
       contextKey = 'state',
       windowKey = '__INITIAL_STATE__'
@@ -220,7 +190,7 @@ export default class TemplateRenderer {
       : ''
   }
 
-  renderScripts (context: Object): string {
+  renderScripts (context) {
     if (this.clientManifest) {
       const initial = this.preloadFiles.filter(({ file }) => isJS(file))
       const async = (this.getUsedAsyncFiles(context) || []).filter(({ file }) => isJS(file))
@@ -233,7 +203,7 @@ export default class TemplateRenderer {
     }
   }
 
-  getUsedAsyncFiles (context: Object): ?Array<Resource> {
+  getUsedAsyncFiles (context) {
     if (!context._mappedFiles && context._registeredComponents && this.mapFiles) {
       const registered = Array.from(context._registeredComponents)
       context._mappedFiles = this.mapFiles(registered).map(normalizeFile)
@@ -242,7 +212,7 @@ export default class TemplateRenderer {
   }
 
   // create a transform stream
-  createStream (context: ?Object): TemplateStream {
+  createStream (context) {
     if (!this.parsedTemplate) {
       throw new Error('createStream cannot be called without a template.')
     }
@@ -250,7 +220,7 @@ export default class TemplateRenderer {
   }
 }
 
-function normalizeFile (file: string): Resource {
+function normalizeFile (file) {
   const withoutQuery = file.replace(/\?.*/, '')
   const extension = path.extname(withoutQuery).slice(1)
   return {
@@ -261,7 +231,7 @@ function normalizeFile (file: string): Resource {
   }
 }
 
-function getPreloadType (ext: string): string {
+function getPreloadType (ext) {
   if (ext === 'js') {
     return 'script'
   } else if (ext === 'css') {

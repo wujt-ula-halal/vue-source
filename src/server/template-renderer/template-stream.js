@@ -1,20 +1,18 @@
 /* @flow */
 
 const Transform = require('stream').Transform
-import type TemplateRenderer from './index'
-import type { ParsedTemplate } from './parse-template'
 
 export default class TemplateStream extends Transform {
-  started: boolean;
-  renderer: TemplateRenderer;
-  template: ParsedTemplate;
-  context: Object;
-  inject: boolean;
+  started;
+  renderer;
+  template;
+  context;
+  inject;
 
   constructor (
-    renderer: TemplateRenderer,
-    template: ParsedTemplate,
-    context: Object
+    renderer,
+    template,
+    context
   ) {
     super()
     this.started = false
@@ -24,7 +22,7 @@ export default class TemplateStream extends Transform {
     this.inject = renderer.inject
   }
 
-  _transform (data: Buffer | string, encoding: string, done: Function) {
+  _transform (data, encoding, done) {
     if (!this.started) {
       this.emit('beforeStart')
       this.start()
@@ -59,7 +57,7 @@ export default class TemplateStream extends Transform {
     this.push(this.template.neck(this.context))
   }
 
-  _flush (done: Function) {
+  _flush (done) {
     this.emit('beforeEnd')
 
     if (this.inject) {

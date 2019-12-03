@@ -1,26 +1,21 @@
 /* @flow */
 
-import config from 'core/config'
+// import config from 'core/config'
+import config from '../../../core/config'
 
-import {
-  warn,
-  isObject,
-  toObject,
-  isReservedAttribute,
-  camelize,
-  hyphenate
-} from 'core/util/index'
+// import {warn,isObject,toObject,isReservedAttribute,camelize,hyphenate} from 'core/util/index'
+import {warn,isObject,toObject,isReservedAttribute,camelize,hyphenate} from '../../../core/util/index'
 
 /**
  * Runtime helper for merging v-bind="object" into a VNode's data.
  */
 export function bindObjectProps (
-  data: any,
-  tag: string,
-  value: any,
-  asProp: boolean,
-  isSync?: boolean
-): VNodeData {
+  data,
+  tag,
+  value,
+  asProp,
+  isSync
+) {
   if (value) {
     if (!isObject(value)) {
       process.env.NODE_ENV !== 'production' && warn(

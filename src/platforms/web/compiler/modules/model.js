@@ -10,20 +10,13 @@
  *   <input v-else :type="type" v-model="data[type]">
  */
 
-import {
-  addRawAttr,
-  getBindingAttr,
-  getAndRemoveAttr
-} from 'compiler/helpers'
+// import {addRawAttr,getBindingAttr,getAndRemoveAttr} from 'compiler/helpers'
+import {addRawAttr,getBindingAttr,getAndRemoveAttr} from '../../../../compiler/helpers'
 
-import {
-  processFor,
-  processElement,
-  addIfCondition,
-  createASTElement
-} from 'compiler/parser/index'
+// import {processFor,processElement,addIfCondition,createASTElement} from 'compiler/parser/index'
+import {processFor,processElement,addIfCondition,createASTElement} from '../../../../compiler/parser/index'
 
-function preTransformNode (el: ASTElement, options: CompilerOptions) {
+function preTransformNode (el, options) {
   if (el.tag === 'input') {
     const map = el.attrsMap
     if (!map['v-model']) {

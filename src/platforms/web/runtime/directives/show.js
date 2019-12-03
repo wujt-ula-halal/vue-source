@@ -3,14 +3,14 @@
 import { enter, leave } from '../modules/transition'
 
 // recursively search for possible transition defined inside the component root
-function locateNode (vnode: VNode): VNodeWithData {
+function locateNode (vnode) {
   return vnode.componentInstance && (!vnode.data || !vnode.data.transition)
     ? locateNode(vnode.componentInstance._vnode)
     : vnode
 }
 
 export default {
-  bind (el: any, { value }: VNodeDirective, vnode: VNodeWithData) {
+  bind (el, { value }, vnode) {
     vnode = locateNode(vnode)
     const transition = vnode.data && vnode.data.transition
     const originalDisplay = el.__vOriginalDisplay =
@@ -25,7 +25,7 @@ export default {
     }
   },
 
-  update (el: any, { value, oldValue }: VNodeDirective, vnode: VNodeWithData) {
+  update (el, { value, oldValue }, vnode) {
     /* istanbul ignore if */
     if (!value === !oldValue) return
     vnode = locateNode(vnode)
@@ -47,11 +47,11 @@ export default {
   },
 
   unbind (
-    el: any,
-    binding: VNodeDirective,
-    vnode: VNodeWithData,
-    oldVnode: VNodeWithData,
-    isDestroy: boolean
+    el,
+    binding,
+    vnode,
+    oldVnode,
+    isDestroy
   ) {
     if (!isDestroy) {
       el.style.display = el.__vOriginalDisplay

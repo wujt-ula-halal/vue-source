@@ -1,6 +1,5 @@
 /* @flow */
 
-import type Watcher from './watcher'
 import config from '../config'
 import { callHook, activateChildComponent } from '../instance/lifecycle'
 
@@ -14,10 +13,10 @@ import {
 
 export const MAX_UPDATE_COUNT = 100
 
-const queue: Array<Watcher> = []
-const activatedChildren: Array<Component> = []
-let has: { [key: number]: ?true } = {}
-let circular: { [key: number]: number } = {}
+const queue = []
+const activatedChildren = []
+let has = {}
+let circular = {}
 let waiting = false
 let flushing = false
 let index = 0
@@ -42,7 +41,7 @@ function resetSchedulerState () {
 export let currentFlushTimestamp = 0
 
 // Async edge case fix requires storing an event listener's attach timestamp.
-let getNow: () => number = Date.now
+let getNow = Date.now
 
 // Determine what event timestamp the browser is using. Annoyingly, the
 // timestamp can either be hi-res (relative to page load) or low-res
@@ -142,7 +141,7 @@ function callUpdatedHooks (queue) {
  * Queue a kept-alive component that was activated during patch.
  * The queue will be processed after the entire tree has been patched.
  */
-export function queueActivatedComponent (vm: Component) {
+export function queueActivatedComponent (vm) {
   // setting _inactive to false here so that a render function can
   // rely on checking whether it's in an inactive tree (e.g. router-view)
   vm._inactive = false
@@ -161,7 +160,7 @@ function callActivatedHooks (queue) {
  * Jobs with duplicate IDs will be skipped unless it's
  * pushed when the queue is being flushed.
  */
-export function queueWatcher (watcher: Watcher) {
+export function queueWatcher (watcher) {
   const id = watcher.id
   if (has[id] == null) {
     has[id] = true

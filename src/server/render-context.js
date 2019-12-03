@@ -1,47 +1,27 @@
 /* @flow */
 
-import { isUndef } from 'shared/util'
+// import { isUndef } from 'shared/util'
+import { isUndef } from '../shared/util'
 
-type RenderState = {
-  type: 'Element';
-  rendered: number;
-  total: number;
-  children: Array<VNode>;
-  endTag: string;
-} | {
-  type: 'Fragment';
-  rendered: number;
-  total: number;
-  children: Array<VNode>;
-} | {
-  type: 'Component';
-  prevActive: Component;
-} | {
-  type: 'ComponentWithCache';
-  buffer: Array<string>;
-  bufferIndex: number;
-  componentBuffer: Array<Set<Class<Component>>>;
-  key: string;
-};
 
 export class RenderContext {
-  userContext: ?Object;
-  activeInstance: Component;
-  renderStates: Array<RenderState>;
-  write: (text: string, next: Function) => void;
-  renderNode: (node: VNode, isRoot: boolean, context: RenderContext) => void;
-  next: () => void;
-  done: (err: ?Error) => void;
+  userContext;
+  activeInstance;
+  renderStates;
+  write;
+  renderNode;
+  next;
+  done;
 
-  modules: Array<(node: VNode) => ?string>;
-  directives: Object;
-  isUnaryTag: (tag: string) => boolean;
+  modules;
+  directives;
+  isUnaryTag;
 
-  cache: any;
-  get: ?(key: string, cb: Function) => void;
-  has: ?(key: string, cb: Function) => void;
+  cache;
+  get;
+  has;
 
-  constructor (options: Object) {
+  constructor (options) {
     this.userContext = options.userContext
     this.activeInstance = options.activeInstance
     this.renderStates = []

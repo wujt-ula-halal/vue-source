@@ -1,13 +1,11 @@
 /* @flow */
 
-import { parseText } from 'compiler/parser/text-parser'
-import {
-  getAndRemoveAttr,
-  getBindingAttr,
-  baseWarn
-} from 'compiler/helpers'
+// import { parseText } from 'compiler/parser/text-parser'
+import { parseText } from '../../../../compiler/parser/text-parser'
+// import {getAndRemoveAttr,getBindingAttr,baseWarn} from 'compiler/helpers'
+import {getAndRemoveAttr,getBindingAttr,baseWarn} from '../../../../compiler/helpers'
 
-function transformNode (el: ASTElement, options: CompilerOptions) {
+function transformNode (el, options) {
   const warn = options.warn || baseWarn
   const staticClass = getAndRemoveAttr(el, 'class')
   if (process.env.NODE_ENV !== 'production' && staticClass) {
@@ -31,7 +29,7 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
   }
 }
 
-function genData (el: ASTElement): string {
+function genData (el) {
   let data = ''
   if (el.staticClass) {
     data += `staticClass:${el.staticClass},`

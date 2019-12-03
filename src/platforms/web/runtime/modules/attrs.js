@@ -1,24 +1,15 @@
 /* @flow */
 
-import { isIE, isIE9, isEdge } from 'core/util/env'
+// import { isIE, isIE9, isEdge } from 'core/util/env'
+import { isIE, isIE9, isEdge } from '../../../../core/util/env'
 
-import {
-  extend,
-  isDef,
-  isUndef
-} from 'shared/util'
+// import {extend,isDef,isUndef} from 'shared/util'
+import {extend,isDef,isUndef} from '../../../../shared/util'
 
-import {
-  isXlink,
-  xlinkNS,
-  getXlinkProp,
-  isBooleanAttr,
-  isEnumeratedAttr,
-  isFalsyAttrValue,
-  convertEnumeratedValue
-} from 'web/util/index'
+// import {isXlink,xlinkNS,getXlinkProp,isBooleanAttr,isEnumeratedAttr,isFalsyAttrValue,convertEnumeratedValue} from 'web/util/index'
+import {isXlink,xlinkNS,getXlinkProp,isBooleanAttr,isEnumeratedAttr,isFalsyAttrValue,convertEnumeratedValue} from '../../../web/util/index'
 
-function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateAttrs (oldVnode, vnode) {
   const opts = vnode.componentOptions
   if (isDef(opts) && opts.Ctor.options.inheritAttrs === false) {
     return
@@ -29,7 +20,7 @@ function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   let key, cur, old
   const elm = vnode.elm
   const oldAttrs = oldVnode.data.attrs || {}
-  let attrs: any = vnode.data.attrs || {}
+  let attrs = vnode.data.attrs || {}
   // clone observed objects, as the user probably wants to mutate it
   if (isDef(attrs.__ob__)) {
     attrs = vnode.data.attrs = extend({}, attrs)
@@ -59,7 +50,7 @@ function updateAttrs (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   }
 }
 
-function setAttr (el: Element, key: string, value: any) {
+function setAttr (el, key, value) {
   if (el.tagName.indexOf('-') > -1) {
     baseSetAttr(el, key, value)
   } else if (isBooleanAttr(key)) {

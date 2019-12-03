@@ -4,7 +4,8 @@
 
 
 // 
-export * from 'shared/util'
+// export * from 'shared/util'
+export * from '../../shared/util'
 // unicodeRegExp, isReserved, def, parsePath
 export * from './lang'
 

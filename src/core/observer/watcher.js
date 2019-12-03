@@ -12,9 +12,8 @@ import {
 
 import { traverse } from './traverse'
 import { queueWatcher } from './scheduler'
-import Dep, { pushTarget, popTarget } from './dep'
+import { pushTarget, popTarget } from './dep'
 
-import type { SimpleSet } from '../util/index'
 
 let uid = 0
 
@@ -24,30 +23,30 @@ let uid = 0
  * This is used for both the $watch() api and directives.
  */
 export default class Watcher {
-  vm: Component;
-  expression: string;
-  cb: Function;
-  id: number;
-  deep: boolean;
-  user: boolean;
-  lazy: boolean;
-  sync: boolean;
-  dirty: boolean;
-  active: boolean;
-  deps: Array<Dep>;
-  newDeps: Array<Dep>;
-  depIds: SimpleSet;
-  newDepIds: SimpleSet;
-  before: ?Function;
-  getter: Function;
-  value: any;
+  vm;
+  expression;
+  cb;
+  id;
+  deep;
+  user;
+  lazy;
+  sync;
+  dirty;
+  active;
+  deps;
+  newDeps;
+  depIds;
+  newDepIds;
+  before;
+  getter;
+  value;
 
   constructor (
-    vm: Component,
-    expOrFn: string | Function,
-    cb: Function,
-    options?: ?Object,
-    isRenderWatcher?: boolean
+    vm,
+    expOrFn,
+    cb,
+    options,
+    isRenderWatcher
   ) {
     this.vm = vm
     if (isRenderWatcher) {
@@ -125,7 +124,7 @@ export default class Watcher {
   /**
    * Add a dependency to this directive.
    */
-  addDep (dep: Dep) {
+  addDep (dep) {
     const id = dep.id
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)

@@ -1,16 +1,14 @@
 /* @flow */
 
-import { inBrowser, isIE9, warn } from 'core/util/index'
-import { mergeVNodeHook } from 'core/vdom/helpers/index'
-import { activeInstance } from 'core/instance/lifecycle'
+// import { inBrowser, isIE9, warn } from 'core/util/index'
+import { inBrowser, isIE9, warn } from '../../../../core/util/index'
+// import { mergeVNodeHook } from 'core/vdom/helpers/index'
+import { mergeVNodeHook } from '../../../../core/vdom/helpers/index'
+// import { activeInstance } from 'core/instance/lifecycle'
+import { activeInstance } from '../../../../core/instance/lifecycle'
 
-import {
-  once,
-  isDef,
-  isUndef,
-  isObject,
-  toNumber
-} from 'shared/util'
+// import {once,isDef,isUndef,isObject,toNumber} from 'shared/util'
+import {once,isDef,isUndef,isObject,toNumber} from '../../../../shared/util'
 
 import {
   nextFrame,
@@ -20,8 +18,8 @@ import {
   removeTransitionClass
 } from '../transition-util'
 
-export function enter (vnode: VNodeWithData, toggleDisplay: ?() => void) {
-  const el: any = vnode.elm
+export function enter (vnode, toggleDisplay) {
+  const el = vnode.elm
 
   // call leave callback now
   if (isDef(el._leaveCb)) {
@@ -99,7 +97,7 @@ export function enter (vnode: VNodeWithData, toggleDisplay: ?() => void) {
     ? (appearCancelled || enterCancelled)
     : enterCancelled
 
-  const explicitEnterDuration: any = toNumber(
+  const explicitEnterDuration = toNumber(
     isObject(duration)
       ? duration.enter
       : duration
@@ -173,8 +171,8 @@ export function enter (vnode: VNodeWithData, toggleDisplay: ?() => void) {
   }
 }
 
-export function leave (vnode: VNodeWithData, rm: Function) {
-  const el: any = vnode.elm
+export function leave (vnode, rm) {
+  const el = vnode.elm
 
   // call enter callback now
   if (isDef(el._enterCb)) {
@@ -209,7 +207,7 @@ export function leave (vnode: VNodeWithData, rm: Function) {
   const expectsCSS = css !== false && !isIE9
   const userWantsControl = getHookArgumentsLength(leave)
 
-  const explicitLeaveDuration: any = toNumber(
+  const explicitLeaveDuration = toNumber(
     isObject(duration)
       ? duration.leave
       : duration
@@ -252,7 +250,7 @@ export function leave (vnode: VNodeWithData, rm: Function) {
     }
     // record leaving element
     if (!vnode.data.show && el.parentNode) {
-      (el.parentNode._pending || (el.parentNode._pending = {}))[(vnode.key: any)] = vnode
+      (el.parentNode._pending || (el.parentNode._pending = {}))[(vnode.key)] = vnode
     }
     beforeLeave && beforeLeave(el)
     if (expectsCSS) {
@@ -306,7 +304,7 @@ function isValidDuration (val) {
  * - a wrapped component method (check ._length)
  * - a plain function (.length)
  */
-function getHookArgumentsLength (fn: Function): boolean {
+function getHookArgumentsLength (fn) {
   if (isUndef(fn)) {
     return false
   }
@@ -323,7 +321,7 @@ function getHookArgumentsLength (fn: Function): boolean {
   }
 }
 
-function _enter (_: any, vnode: VNodeWithData) {
+function _enter (_, vnode) {
   if (vnode.data.show !== true) {
     enter(vnode)
   }
@@ -332,7 +330,7 @@ function _enter (_: any, vnode: VNodeWithData) {
 export default inBrowser ? {
   create: _enter,
   activate: _enter,
-  remove (vnode: VNode, rm: Function) {
+  remove (vnode, rm) {
     /* istanbul ignore else */
     if (vnode.data.show !== true) {
       leave(vnode, rm)

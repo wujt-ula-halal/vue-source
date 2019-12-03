@@ -1,8 +1,11 @@
 /* @flow */
 
-import config from 'core/config'
-import { addHandler, addProp, getBindingAttr } from 'compiler/helpers'
-import { genComponentModel, genAssignmentCode } from 'compiler/directives/model'
+// import config from 'core/config'
+import config from '../../../../core/config'
+// import { addHandler, addProp, getBindingAttr } from 'compiler/helpers'
+import { addHandler, addProp, getBindingAttr } from '../../../../compiler/helpers'
+// import { genComponentModel, genAssignmentCode } from 'compiler/directives/model'
+import { genComponentModel, genAssignmentCode } from '../../../../compiler/directives/model'
 
 let warn
 
@@ -12,10 +15,10 @@ export const RANGE_TOKEN = '__r'
 export const CHECKBOX_RADIO_TOKEN = '__c'
 
 export default function model (
-  el: ASTElement,
-  dir: ASTDirective,
-  _warn: Function
-): ?boolean {
+  el,
+  dir,
+  _warn
+) {
   warn = _warn
   const value = dir.value
   const modifiers = dir.modifiers
@@ -65,9 +68,9 @@ export default function model (
 }
 
 function genCheckboxModel (
-  el: ASTElement,
-  value: string,
-  modifiers: ?ASTModifiers
+  el,
+  value,
+  modifiers
 ) {
   const number = modifiers && modifiers.number
   const valueBinding = getBindingAttr(el, 'value') || 'null'
@@ -96,9 +99,9 @@ function genCheckboxModel (
 }
 
 function genRadioModel (
-  el: ASTElement,
-  value: string,
-  modifiers: ?ASTModifiers
+  el,
+  value,
+  modifiers
 ) {
   const number = modifiers && modifiers.number
   let valueBinding = getBindingAttr(el, 'value') || 'null'
@@ -108,9 +111,9 @@ function genRadioModel (
 }
 
 function genSelect (
-  el: ASTElement,
-  value: string,
-  modifiers: ?ASTModifiers
+  el,
+  value,
+  modifiers
 ) {
   const number = modifiers && modifiers.number
   const selectedVal = `Array.prototype.filter` +
@@ -125,10 +128,10 @@ function genSelect (
 }
 
 function genDefaultModel (
-  el: ASTElement,
-  value: string,
-  modifiers: ?ASTModifiers
-): ?boolean {
+  el,
+  value,
+  modifiers
+) {
   const type = el.attrsMap.type
 
   // warn if v-bind:value conflicts with v-model

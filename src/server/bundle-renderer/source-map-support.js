@@ -4,7 +4,7 @@ const SourceMapConsumer = require('source-map').SourceMapConsumer
 
 const filenameRE = /\(([^)]+\.js):(\d+):(\d+)\)$/
 
-export function createSourceMapConsumers (rawMaps: Object) {
+export function createSourceMapConsumers (rawMaps) {
   const maps = {}
   Object.keys(rawMaps).forEach(file => {
     maps[file] = new SourceMapConsumer(rawMaps[file])
@@ -12,9 +12,7 @@ export function createSourceMapConsumers (rawMaps: Object) {
   return maps
 }
 
-export function rewriteErrorTrace (e: any, mapConsumers: {
-  [key: string]: SourceMapConsumer
-}) {
+export function rewriteErrorTrace (e, mapConsumers) {
   if (e && typeof e.stack === 'string') {
     e.stack = e.stack.split('\n').map(line => {
       return rewriteTraceLine(line, mapConsumers)
@@ -22,9 +20,7 @@ export function rewriteErrorTrace (e: any, mapConsumers: {
   }
 }
 
-function rewriteTraceLine (trace: string, mapConsumers: {
-  [key: string]: SourceMapConsumer
-}) {
+function rewriteTraceLine (trace, mapConsumers) {
   const m = trace.match(filenameRE)
   const map = m && mapConsumers[m[1]]
   if (m != null && map) {

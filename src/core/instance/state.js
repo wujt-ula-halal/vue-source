@@ -35,7 +35,7 @@ const sharedPropertyDefinition = {
   set: noop
 }
 
-export function proxy (target: Object, sourceKey: string, key: string) {
+export function proxy (target, sourceKey, key) {
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]
   }
@@ -45,7 +45,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
-export function initState (vm: Component) {
+export function initState (vm) {
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
@@ -61,7 +61,7 @@ export function initState (vm: Component) {
   }
 }
 
-function initProps (vm: Component, propsOptions: Object) {
+function initProps (vm, propsOptions) {
   const propsData = vm.$options.propsData || {}
   const props = vm._props = {}
   // cache prop keys so that future props updates can iterate using Array
@@ -109,7 +109,7 @@ function initProps (vm: Component, propsOptions: Object) {
   toggleObserving(true)
 }
 
-function initData (vm: Component) {
+function initData (vm) {
   let data = vm.$options.data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
@@ -151,7 +151,7 @@ function initData (vm: Component) {
   observe(data, true /* asRootData */)
 }
 
-export function getData (data: Function, vm: Component): any {
+export function getData (data, vm) {
   // #7573 disable dep collection when invoking data getters
   pushTarget()
   try {
@@ -166,7 +166,7 @@ export function getData (data: Function, vm: Component): any {
 
 const computedWatcherOptions = { lazy: true }
 
-function initComputed (vm: Component, computed: Object) {
+function initComputed (vm, computed) {
   // $flow-disable-line
   const watchers = vm._computedWatchers = Object.create(null)
   // computed properties are just getters during SSR
@@ -208,9 +208,9 @@ function initComputed (vm: Component, computed: Object) {
 }
 
 export function defineComputed (
-  target: any,
-  key: string,
-  userDef: Object | Function
+  target,
+  key,
+  userDef
 ) {
   const shouldCache = !isServerRendering()
   if (typeof userDef === 'function') {
@@ -259,7 +259,7 @@ function createGetterInvoker(fn) {
   }
 }
 
-function initMethods (vm: Component, methods: Object) {
+function initMethods (vm, methods) {
   const props = vm.$options.props
   for (const key in methods) {
     if (process.env.NODE_ENV !== 'production') {
@@ -287,7 +287,7 @@ function initMethods (vm: Component, methods: Object) {
   }
 }
 
-function initWatch (vm: Component, watch: Object) {
+function initWatch (vm, watch) {
   for (const key in watch) {
     const handler = watch[key]
     if (Array.isArray(handler)) {
@@ -301,10 +301,10 @@ function initWatch (vm: Component, watch: Object) {
 }
 
 function createWatcher (
-  vm: Component,
-  expOrFn: string | Function,
-  handler: any,
-  options?: Object
+  vm,
+  expOrFn,
+  handler,
+  options
 ) {
   if (isPlainObject(handler)) {
     options = handler
@@ -316,7 +316,7 @@ function createWatcher (
   return vm.$watch(expOrFn, handler, options)
 }
 
-export function stateMixin (Vue: Class<Component>) {
+export function stateMixin (Vue) {
   // flow somehow has problems with directly declared definition object
   // when using Object.defineProperty, so we have to procedurally build up
   // the object here.
@@ -343,11 +343,11 @@ export function stateMixin (Vue: Class<Component>) {
   Vue.prototype.$delete = del
 
   Vue.prototype.$watch = function (
-    expOrFn: string | Function,
-    cb: any,
-    options?: Object
-  ): Function {
-    const vm: Component = this
+    expOrFn,
+    cb,
+    options
+  ) {
+    const vm = this
     if (isPlainObject(cb)) {
       return createWatcher(vm, expOrFn, cb, options)
     }

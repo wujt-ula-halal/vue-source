@@ -1,14 +1,13 @@
 /* @flow */
 
-import type VNode from 'core/vdom/vnode'
 
 /**
  * Runtime helper for resolving raw children VNodes into a slot object.
  */
 export function resolveSlots (
-  children: ?Array<VNode>,
-  context: ?Component
-): { [key: string]: Array<VNode> } {
+  children,
+  context
+) {
   if (!children || !children.length) {
     return {}
   }
@@ -45,6 +44,6 @@ export function resolveSlots (
   return slots
 }
 
-function isWhitespace (node: VNode): boolean {
+function isWhitespace (node) {
   return (node.isComment && !node.asyncFactory) || node.text === ' '
 }

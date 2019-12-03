@@ -1,13 +1,14 @@
 /* @flow */
 
-import { extend, isObject } from 'shared/util'
+// import { extend, isObject } from 'shared/util'
+import { extend, isObject } from '../../../../shared/util'
 
-function updateClass (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateClass (oldVnode, vnode) {
   const el = vnode.elm
   const ctx = vnode.context
 
-  const data: VNodeData = vnode.data
-  const oldData: VNodeData = oldVnode.data
+  const data = vnode.data
+  const oldData = oldVnode.data
   if (!data.staticClass &&
     !data.class &&
     (!oldData || (!oldData.staticClass && !oldData.class))
@@ -32,10 +33,10 @@ function updateClass (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   }
 }
 
-function makeClassList (data: VNodeData): Array<string> {
+function makeClassList (data) {
   const classList = []
   // unlike web, weex vnode staticClass is an Array
-  const staticClass: any = data.staticClass
+  const staticClass = data.staticClass
   const dataClass = data.class
   if (staticClass) {
     classList.push.apply(classList, staticClass)
@@ -50,10 +51,10 @@ function makeClassList (data: VNodeData): Array<string> {
   return classList
 }
 
-function getStyle (oldClassList: Array<string>, classList: Array<string>, ctx: Component): Object {
+function getStyle (oldClassList, classList, ctx) {
   // style is a weex-only injected object
   // compiled from <style> tags in weex files
-  const stylesheet: any = ctx.$options.style || {}
+  const stylesheet = ctx.$options.style || {}
   const result = {}
   classList.forEach(name => {
     const style = stylesheet[name]

@@ -1,12 +1,13 @@
 /* @flow */
 
 import config from '../config'
-import { noop } from 'shared/util'
+// import { noop } from 'shared/util'
+import { noop } from '../../shared/util'
 
 export let warn = noop
 export let tip = noop
-export let generateComponentTrace = (noop: any) // work around flow check
-export let formatComponentName = (noop: any)
+export let generateComponentTrace = (noop) // work around flow check
+export let formatComponentName = (noop)
 
 if (process.env.NODE_ENV !== 'production') {
   const hasConsole = typeof console !== 'undefined'

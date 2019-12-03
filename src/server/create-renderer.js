@@ -5,33 +5,9 @@ import { createWriteFunction } from './write'
 import { createRenderFunction } from './render'
 import { createPromiseCallback } from './util'
 import TemplateRenderer from './template-renderer/index'
-import type { ClientManifest } from './template-renderer/index'
 
-export type Renderer = {
-  renderToString: (component: Component, context: any, cb: any) => ?Promise<string>;
-  renderToStream: (component: Component, context?: Object) => stream$Readable;
-};
 
-type RenderCache = {
-  get: (key: string, cb?: Function) => string | void;
-  set: (key: string, val: string) => void;
-  has?: (key: string, cb?: Function) => boolean | void;
-};
 
-export type RenderOptions = {
-  modules?: Array<(vnode: VNode) => ?string>;
-  directives?: Object;
-  isUnaryTag?: Function;
-  cache?: RenderCache;
-  template?: string | (content: string, context: any) => string;
-  inject?: boolean;
-  basedir?: string;
-  shouldPreload?: Function;
-  shouldPrefetch?: Function;
-  clientManifest?: ClientManifest;
-  serializer?: Function;
-  runInNewContext?: boolean | 'once';
-};
 
 export function createRenderer ({
   modules = [],
@@ -44,7 +20,7 @@ export function createRenderer ({
   shouldPrefetch,
   clientManifest,
   serializer
-}: RenderOptions = {}): Renderer {
+} = {}) {
   const render = createRenderFunction(modules, directives, isUnaryTag, cache)
   const templateRenderer = new TemplateRenderer({
     template,
@@ -57,10 +33,10 @@ export function createRenderer ({
 
   return {
     renderToString (
-      component: Component,
-      context: any,
-      cb: any
-    ): ?Promise<string> {
+      component,
+      context,
+      cb
+    ) {
       if (typeof context === 'function') {
         cb = context
         context = {}
@@ -114,9 +90,9 @@ export function createRenderer ({
     },
 
     renderToStream (
-      component: Component,
-      context?: Object
-    ): stream$Readable {
+      component,
+      context
+    ) {
       if (context) {
         templateRenderer.bindRenderFns(context)
       }

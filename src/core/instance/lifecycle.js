@@ -18,10 +18,10 @@ import {
   invokeWithErrorHandling
 } from '../util/index'
 
-export let activeInstance: any = null
-export let isUpdatingChildComponent: boolean = false
+export let activeInstance = null
+export let isUpdatingChildComponent = false
 
-export function setActiveInstance(vm: Component) {
+export function setActiveInstance(vm) {
   const prevActiveInstance = activeInstance
   activeInstance = vm
   return () => {
@@ -29,7 +29,7 @@ export function setActiveInstance(vm: Component) {
   }
 }
 
-export function initLifecycle (vm: Component) {
+export function initLifecycle (vm) {
   const options = vm.$options
 
   // locate first non-abstract parent
@@ -55,9 +55,9 @@ export function initLifecycle (vm: Component) {
   vm._isBeingDestroyed = false
 }
 
-export function lifecycleMixin (Vue: Class<Component>) {
-  Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
-    const vm: Component = this
+export function lifecycleMixin (Vue) {
+  Vue.prototype._update = function (vnode, hydrating) {
+    const vm = this
     const prevEl = vm.$el
     const prevVnode = vm._vnode
     const restoreActiveInstance = setActiveInstance(vm)
@@ -88,14 +88,14 @@ export function lifecycleMixin (Vue: Class<Component>) {
   }
 
   Vue.prototype.$forceUpdate = function () {
-    const vm: Component = this
+    const vm = this
     if (vm._watcher) {
       vm._watcher.update()
     }
   }
 
   Vue.prototype.$destroy = function () {
-    const vm: Component = this
+    const vm = this
     if (vm._isBeingDestroyed) {
       return
     }
@@ -139,10 +139,10 @@ export function lifecycleMixin (Vue: Class<Component>) {
 }
 
 export function mountComponent (
-  vm: Component,
-  el: ?Element,
-  hydrating?: boolean
-): Component {
+  vm,
+  el,
+  hydrating
+) {
   vm.$el = el
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode
@@ -213,11 +213,11 @@ export function mountComponent (
 }
 
 export function updateChildComponent (
-  vm: Component,
-  propsData: ?Object,
-  listeners: ?Object,
-  parentVnode: MountedComponentVNode,
-  renderChildren: ?Array<VNode>
+  vm,
+  propsData,
+  listeners,
+  parentVnode,
+  renderChildren
 ) {
   if (process.env.NODE_ENV !== 'production') {
     isUpdatingChildComponent = true
@@ -267,7 +267,7 @@ export function updateChildComponent (
     const propKeys = vm.$options._propKeys || []
     for (let i = 0; i < propKeys.length; i++) {
       const key = propKeys[i]
-      const propOptions: any = vm.$options.props // wtf flow?
+      const propOptions = vm.$options.props // wtf flow?
       props[key] = validateProp(key, propOptions, propsData, vm)
     }
     toggleObserving(true)
@@ -299,7 +299,7 @@ function isInInactiveTree (vm) {
   return false
 }
 
-export function activateChildComponent (vm: Component, direct?: boolean) {
+export function activateChildComponent (vm, direct) {
   if (direct) {
     vm._directInactive = false
     if (isInInactiveTree(vm)) {
@@ -317,7 +317,7 @@ export function activateChildComponent (vm: Component, direct?: boolean) {
   }
 }
 
-export function deactivateChildComponent (vm: Component, direct?: boolean) {
+export function deactivateChildComponent (vm, direct) {
   if (direct) {
     vm._directInactive = true
     if (isInInactiveTree(vm)) {
@@ -333,7 +333,7 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
   }
 }
 
-export function callHook (vm: Component, hook: string) {
+export function callHook (vm, hook) {
   // #7573 disable dep collection when invoking lifecycle hooks
   pushTarget()
   const handlers = vm.$options[hook]

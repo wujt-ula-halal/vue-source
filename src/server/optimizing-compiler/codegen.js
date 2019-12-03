@@ -4,15 +4,8 @@
 // SSR-optimizable nodes and turn them into string render fns. In cases where
 // a node is not optimizable it simply falls back to the default codegen.
 
-import {
-  genIf,
-  genFor,
-  genData,
-  genText,
-  genElement,
-  genChildren,
-  CodegenState
-} from 'compiler/codegen/index'
+// import {genIf,genFor,genData,genText,genElement,genChildren,CodegenState} from 'compiler/codegen/index'
+import {genIf,genFor,genData,genText,genElement,genChildren,CodegenState} from '../../compiler/codegen/index'
 
 import {
   genAttrSegments,
@@ -24,12 +17,8 @@ import {
 
 import { escape } from 'web/server/util'
 import { optimizability } from './optimizer'
-import type { CodegenResult } from 'compiler/codegen/index'
 
-export type StringSegment = {
-  type: number;
-  value: string;
-};
+
 
 // segment types
 export const RAW = 0
@@ -37,9 +26,9 @@ export const INTERPOLATION = 1
 export const EXPRESSION = 2
 
 export function generate (
-  ast: ASTElement | void,
-  options: CompilerOptions
-): CodegenResult {
+  ast,
+  options
+) {
   const state = new CodegenState(options)
   const code = ast ? genSSRElement(ast, state) : '_c("div")'
   return {
@@ -48,7 +37,7 @@ export function generate (
   }
 }
 
-function genSSRElement (el: ASTElement, state: CodegenState): string {
+function genSSRElement (el, state) {
   if (el.for && !el.forProcessed) {
     return genFor(el, state, genSSRElement)
   } else if (el.if && !el.ifProcessed) {
@@ -123,7 +112,7 @@ function elementToString (el, state) {
   return `(${flattenSegments(elementToSegments(el, state))})`
 }
 
-function elementToSegments (el, state): Array<StringSegment> {
+function elementToSegments (el, state) {
   // v-for / v-if
   if (el.for && !el.forProcessed) {
     el.forProcessed = true
@@ -150,7 +139,7 @@ function elementToSegments (el, state): Array<StringSegment> {
   return openSegments.concat(childrenSegments, close)
 }
 
-function elementToOpenTagSegments (el, state): Array<StringSegment> {
+function elementToOpenTagSegments (el, state) {
   applyModelTransform(el, state)
   let binding
   const segments = [{ type: RAW, value: `<${el.tag}` }]
@@ -197,7 +186,7 @@ function elementToOpenTagSegments (el, state): Array<StringSegment> {
   return segments
 }
 
-function childrenToSegments (el, state): Array<StringSegment> {
+function childrenToSegments (el, state) {
   let binding
   if ((binding = el.attrsMap['v-html'])) {
     return [{ type: EXPRESSION, value: `_s(${binding})` }]
@@ -214,9 +203,9 @@ function childrenToSegments (el, state): Array<StringSegment> {
 }
 
 function nodesToSegments (
-  children: Array<ASTNode>,
-  state: CodegenState
-): Array<StringSegment> {
+  children,
+  state
+) {
   const segments = []
   for (let i = 0; i < children.length; i++) {
     const c = children[i]
@@ -235,7 +224,7 @@ function nodesToSegments (
   return segments
 }
 
-function flattenSegments (segments: Array<StringSegment>): string {
+function flattenSegments (segments) {
   const mergedSegments = []
   let textBuffer = ''
 

@@ -1,10 +1,11 @@
 /* @flow */
 
-import { identity, resolveAsset } from 'core/util/index'
+// import { identity, resolveAsset } from 'core/util/index'
+import { identity, resolveAsset } from '../../../core/util/index'
 
 /**
  * Runtime helper for resolving filters
  */
-export function resolveFilter (id: string): Function {
+export function resolveFilter (id) {
   return resolveAsset(this.$options, 'filters', id, true) || identity
 }

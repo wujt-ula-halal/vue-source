@@ -1,7 +1,9 @@
 /* @flow */
 
-import { parseFor } from 'compiler/parser/index'
-import { getAndRemoveAttr, addRawAttr } from 'compiler/helpers'
+// import { parseFor } from 'compiler/parser/index'
+import { parseFor } from '../../../../../compiler/parser/index'
+// import { getAndRemoveAttr, addRawAttr } from 'compiler/helpers'
+import { getAndRemoveAttr, addRawAttr } from '../../../../../compiler/helpers'
 
 /**
  * Map the following syntax to corresponding attrs:
@@ -13,8 +15,8 @@ import { getAndRemoveAttr, addRawAttr } from 'compiler/helpers'
  */
 
 export function preTransformRecycleList (
-  el: ASTElement,
-  options: WeexCompilerOptions
+  el,
+  options
 ) {
   const exp = getAndRemoveAttr(el, 'for')
   if (!exp) {

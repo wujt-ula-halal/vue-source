@@ -3,10 +3,11 @@
 import config from '../config'
 import { warn } from './debug'
 import { inBrowser, inWeex } from './env'
-import { isPromise } from 'shared/util'
+// import { isPromise } from 'shared/util'
+import { isPromise } from '../../shared/util'
 import { pushTarget, popTarget } from '../observer/dep'
 
-export function handleError (err: Error, vm: any, info: string) {
+export function handleError (err, vm, info) {
   // Deactivate deps tracking while processing error handler to avoid possible infinite rendering.
   // See: https://github.com/vuejs/vuex/issues/1505
   pushTarget()
@@ -34,11 +35,11 @@ export function handleError (err: Error, vm: any, info: string) {
 }
 
 export function invokeWithErrorHandling (
-  handler: Function,
-  context: any,
-  args: null | any[],
-  vm: any,
-  info: string
+  handler,
+  context,
+  args,
+  vm,
+  info
 ) {
   let res
   try {

@@ -6,16 +6,14 @@
  * directly in the rendered HTML to avoid waterfall requests.
  */
 
-import type { ClientManifest } from './index'
 
-export type AsyncFileMapper = (files: Array<string>) => Array<string>;
 
 export function createMapper (
-  clientManifest: ClientManifest
-): AsyncFileMapper {
+  clientManifest
+) {
   const map = createMap(clientManifest)
   // map server-side moduleIds to client-side files
-  return function mapper (moduleIds: Array<string>): Array<string> {
+  return function mapper (moduleIds) {
     const res = new Set()
     for (let i = 0; i < moduleIds.length; i++) {
       const mapped = map.get(moduleIds[i])

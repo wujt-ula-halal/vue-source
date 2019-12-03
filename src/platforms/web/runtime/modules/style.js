@@ -1,7 +1,9 @@
 /* @flow */
 
-import { getStyle, normalizeStyleBinding } from 'web/util/style'
-import { cached, camelize, extend, isDef, isUndef, hyphenate } from 'shared/util'
+// import { getStyle, normalizeStyleBinding } from 'web/util/style'
+import { getStyle, normalizeStyleBinding } from '../../../web/util/style'
+// import { cached, camelize, extend, isDef, isUndef, hyphenate } from 'shared/util'
+import { cached, camelize, extend, isDef, isUndef, hyphenate } from '../../../../shared/util'
 
 const cssVarRE = /^--/
 const importantRE = /\s*!important$/
@@ -44,7 +46,7 @@ const normalize = cached(function (prop) {
   }
 })
 
-function updateStyle (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateStyle (oldVnode, vnode) {
   const data = vnode.data
   const oldData = oldVnode.data
 
@@ -55,9 +57,9 @@ function updateStyle (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   }
 
   let cur, name
-  const el: any = vnode.elm
-  const oldStaticStyle: any = oldData.staticStyle
-  const oldStyleBinding: any = oldData.normalizedStyle || oldData.style || {}
+  const el = vnode.elm
+  const oldStaticStyle = oldData.staticStyle
+  const oldStyleBinding = oldData.normalizedStyle || oldData.style || {}
 
   // if static style exists, stylebinding already merged into it when doing normalizeStyleData
   const oldStyle = oldStaticStyle || oldStyleBinding

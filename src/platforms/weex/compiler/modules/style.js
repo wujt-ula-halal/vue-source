@@ -1,21 +1,17 @@
 /* @flow */
 
-import { cached, camelize, isPlainObject } from 'shared/util'
-import { parseText } from 'compiler/parser/text-parser'
-import {
-  getAndRemoveAttr,
-  getBindingAttr,
-  baseWarn
-} from 'compiler/helpers'
+// import { cached, camelize, isPlainObject } from 'shared/util'
+import { cached, camelize, isPlainObject } from '../../../../shared/util'
+// import { parseText } from 'compiler/parser/text-parser'
+import { parseText } from '../../../../compiler/parser/text-parser'
+// import {getAndRemoveAttr,getBindingAttr,baseWarn} from 'compiler/helpers'
+import {getAndRemoveAttr,getBindingAttr,baseWarn} from '../../../../compiler/helpers'
 
-type StaticStyleResult = {
-  dynamic: boolean,
-  styleResult: string | Object | void
-};
+
 
 const normalize = cached(camelize)
 
-function transformNode (el: ASTElement, options: CompilerOptions) {
+function transformNode (el, options) {
   const warn = options.warn || baseWarn
   const staticStyle = getAndRemoveAttr(el, 'style')
   const { dynamic, styleResult } = parseStaticStyle(staticStyle, options)
@@ -40,7 +36,7 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
   }
 }
 
-function genData (el: ASTElement): string {
+function genData (el) {
   let data = ''
   if (el.staticStyle) {
     data += `staticStyle:${el.staticStyle},`
@@ -51,7 +47,7 @@ function genData (el: ASTElement): string {
   return data
 }
 
-function parseStaticStyle (staticStyle: ?string, options: CompilerOptions): StaticStyleResult {
+function parseStaticStyle (staticStyle, options) {
   // "width: 200px; height: 200px;" -> {width: 200, height: 200}
   // "width: 200px; height: {{y}}" -> {width: 200, height: y}
   let dynamic = false

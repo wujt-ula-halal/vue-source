@@ -1,7 +1,8 @@
 /* @flow */
 /* globals MutationObserver */
 
-import { noop } from 'shared/util'
+// import { noop } from 'shared/util'
+import { noop } from '../../shared/util'
 import { handleError } from './error'
 import { isIE, isIOS, isNative } from './env'
 
@@ -84,7 +85,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   }
 }
 
-export function nextTick (cb?: Function, ctx?: Object) {
+export function nextTick (cb, ctx) {
   let _resolve
   callbacks.push(() => {
     if (cb) {

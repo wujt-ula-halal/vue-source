@@ -1,18 +1,18 @@
 /* @flow */
 
-import Vue from 'core/index'
-import { patch } from 'weex/runtime/patch'
-import { mountComponent } from 'core/instance/lifecycle'
-import platformDirectives from 'weex/runtime/directives/index'
-import platformComponents from 'weex/runtime/components/index'
+// import Vue from 'core/index'
+import Vue from '../../../core/index'
+// import { patch } from 'weex/runtime/patch'
+import { patch } from '../../weex/runtime/patch'
+// import { mountComponent } from 'core/instance/lifecycle'
+import { mountComponent } from '../../../core/instance/lifecycle'
+// import platformDirectives from 'weex/runtime/directives/index'
+import platformDirectives from '../../weex/runtime/directives/index'
+// import platformComponents from 'weex/runtime/components/index'
+import platformComponents from '../../weex/runtime/components/index'
 
-import {
-  query,
-  mustUseProp,
-  isReservedTag,
-  isRuntimeComponent,
-  isUnknownElement
-} from 'weex/util/element'
+// import {query,mustUseProp,isReservedTag,isRuntimeComponent,isUnknownElement} from 'weex/util/element'
+import {query,mustUseProp,isReservedTag,isRuntimeComponent,isUnknownElement} from '../../weex/util/element'
 
 // install platform specific utils
 Vue.config.mustUseProp = mustUseProp
@@ -29,9 +29,9 @@ Vue.prototype.__patch__ = patch
 
 // wrap mount
 Vue.prototype.$mount = function (
-  el?: any,
-  hydrating?: boolean
-): Component {
+  el,
+  hydrating
+) {
   return mountComponent(
     this,
     el && query(el, this.$document),

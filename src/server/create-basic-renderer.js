@@ -2,21 +2,20 @@
 
 import { createWriteFunction } from './write'
 import { createRenderFunction } from './render'
-import type { RenderOptions } from './create-renderer'
 
 export function createBasicRenderer ({
   modules = [],
   directives = {},
   isUnaryTag = (() => false),
   cache
-}: RenderOptions = {}) {
+} = {}) {
   const render = createRenderFunction(modules, directives, isUnaryTag, cache)
 
   return function renderToString (
-    component: Component,
-    context: any,
-    done: any
-  ): void {
+    component,
+    context,
+    done
+  ) {
     if (typeof context === 'function') {
       done = context
       context = {}

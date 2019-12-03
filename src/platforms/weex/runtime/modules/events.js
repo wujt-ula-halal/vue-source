@@ -1,8 +1,9 @@
 /* @flow */
 
-import { updateListeners } from 'core/vdom/helpers/update-listeners'
+// import { updateListeners } from 'core/vdom/helpers/update-listeners'
+import { updateListeners } from '../../../../core/vdom/helpers/update-listeners'
 
-let target: any
+let target
 
 function createOnceHandler (event, handler, capture) {
   const _target = target // save current target element in closure
@@ -15,11 +16,11 @@ function createOnceHandler (event, handler, capture) {
 }
 
 function add (
-  event: string,
-  handler: Function,
-  capture: boolean,
-  passive?: boolean,
-  params?: Array<any>
+  event,
+  handler,
+  capture,
+  passive,
+  params
 ) {
   if (capture) {
     console.log('Weex do not support event in bubble phase.')
@@ -29,15 +30,15 @@ function add (
 }
 
 function remove (
-  event: string,
-  handler: any,
-  capture: any,
-  _target?: any
+  event,
+  handler,
+  capture,
+  _target
 ) {
   (_target || target).removeEvent(event)
 }
 
-function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateDOMListeners (oldVnode, vnode) {
   if (!oldVnode.data.on && !vnode.data.on) {
     return
   }

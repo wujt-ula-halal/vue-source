@@ -6,7 +6,7 @@ const whitespaceRE = /\s+/
  * Add class with compatibility for SVG since classList is not supported on
  * SVG elements in IE
  */
-export function addClass (el: HTMLElement, cls: ?string) {
+export function addClass (el, cls) {
   /* istanbul ignore if */
   if (!cls || !(cls = cls.trim())) {
     return
@@ -31,7 +31,7 @@ export function addClass (el: HTMLElement, cls: ?string) {
  * Remove class with compatibility for SVG since classList is not supported on
  * SVG elements in IE
  */
-export function removeClass (el: HTMLElement, cls: ?string) {
+export function removeClass (el, cls) {
   /* istanbul ignore if */
   if (!cls || !(cls = cls.trim())) {
     return

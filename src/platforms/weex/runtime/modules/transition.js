@@ -1,7 +1,11 @@
-import { warn } from 'core/util/debug'
-import { extend, once, noop } from 'shared/util'
-import { activeInstance } from 'core/instance/lifecycle'
-import { resolveTransition } from 'web/runtime/transition-util'
+// import { warn } from 'core/util/debug'
+import { warn } from '../../../../core/util/debug'
+// import { extend, once, noop } from 'shared/util'
+import { extend, once, noop } from '../../../../shared/util'
+// import { activeInstance } from 'core/instance/lifecycle'
+import { activeInstance } from '../../../../core/instance/lifecycle'
+// import { resolveTransition } from 'web/runtime/transition-util'
+import { resolveTransition } from '../../../web/runtime/transition-util'
 
 export default {
   create: enter,

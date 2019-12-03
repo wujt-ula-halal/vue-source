@@ -6,16 +6,12 @@ const compileOptions = {
   interpolate: /{{{([\s\S]+?)}}}/g
 }
 
-export type ParsedTemplate = {
-  head: (data: any) => string;
-  neck: (data: any) => string;
-  tail: (data: any) => string;
-};
+
 
 export function parseTemplate (
-  template: string,
-  contentPlaceholder?: string = '<!--vue-ssr-outlet-->'
-): ParsedTemplate {
+  template,
+  contentPlaceholder = '<!--vue-ssr-outlet-->'
+) {
   if (typeof template === 'object') {
     return template
   }

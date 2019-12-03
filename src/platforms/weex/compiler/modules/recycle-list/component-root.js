@@ -1,9 +1,10 @@
 /* @flow */
 
-import { addAttr } from 'compiler/helpers'
+// import { addAttr } from 'compiler/helpers'
+import { addAttr } from '../../../../../compiler/helpers'
 
 // mark component root nodes as
-export function postTransformComponentRoot (el: ASTElement) {
+export function postTransformComponentRoot (el) {
   if (!el.parent) {
     // component root
     addAttr(el, '@isComponentRoot', 'true')

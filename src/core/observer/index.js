@@ -22,9 +22,9 @@ const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
  * In some cases we may want to disable observation inside a component's
  * update computation.
  */
-export let shouldObserve: boolean = true
+export let shouldObserve = true
 
-export function toggleObserving (value: boolean) {
+export function toggleObserving (value) {
   shouldObserve = value
 }
 
@@ -35,11 +35,11 @@ export function toggleObserving (value: boolean) {
  * collect dependencies and dispatch updates.
  */
 export class Observer {
-  value: any;
-  dep: Dep;
-  vmCount: number; // number of vms that have this object as root $data
+  value;
+  dep;
+  vmCount; // number of vms that have this object as root $data
 
-  constructor (value: any) {
+  constructor (value) {
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
@@ -61,7 +61,7 @@ export class Observer {
    * getter/setters. This method should only be called when
    * value type is Object.
    */
-  walk (obj: Object) {
+  walk (obj) {
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
       defineReactive(obj, keys[i])
@@ -71,7 +71,7 @@ export class Observer {
   /**
    * Observe a list of Array items.
    */
-  observeArray (items: Array<any>) {
+  observeArray (items) {
     for (let i = 0, l = items.length; i < l; i++) {
       observe(items[i])
     }
@@ -84,7 +84,7 @@ export class Observer {
  * Augment a target Object or Array by intercepting
  * the prototype chain using __proto__
  */
-function protoAugment (target, src: Object) {
+function protoAugment (target, src) {
   /* eslint-disable no-proto */
   target.__proto__ = src
   /* eslint-enable no-proto */
@@ -95,7 +95,7 @@ function protoAugment (target, src: Object) {
  * hidden properties.
  */
 /* istanbul ignore next */
-function copyAugment (target: Object, src: Object, keys: Array<string>) {
+function copyAugment (target, src, keys) {
   for (let i = 0, l = keys.length; i < l; i++) {
     const key = keys[i]
     def(target, key, src[key])
@@ -107,11 +107,11 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
  */
-export function observe (value: any, asRootData: ?boolean): Observer | void {
+export function observe (value, asRootData) {
   if (!isObject(value) || value instanceof VNode) {
     return
   }
-  let ob: Observer | void
+  let ob
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
@@ -133,11 +133,11 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
  * Define a reactive property on an Object.
  */
 export function defineReactive (
-  obj: Object,
-  key: string,
-  val: any,
-  customSetter?: ?Function,
-  shallow?: boolean
+  obj,
+  key,
+  val,
+  customSetter,
+  shallow
 ) {
   const dep = new Dep()
 
@@ -198,11 +198,11 @@ export function defineReactive (
  * triggers change notification if the property doesn't
  * already exist.
  */
-export function set (target: Array<any> | Object, key: any, val: any): any {
+export function set (target, key, val) {
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
-    warn(`Cannot set reactive property on undefined, null, or primitive value: ${(target: any)}`)
+    warn(`Cannot set reactive property on undefined, null, or primitive value: ${(target)}`)
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key)
@@ -213,7 +213,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target[key] = val
     return val
   }
-  const ob = (target: any).__ob__
+  const ob = (target).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
@@ -233,17 +233,17 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
 /**
  * Delete a property and trigger change if necessary.
  */
-export function del (target: Array<any> | Object, key: any) {
+export function del (target, key) {
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
-    warn(`Cannot delete reactive property on undefined, null, or primitive value: ${(target: any)}`)
+    warn(`Cannot delete reactive property on undefined, null, or primitive value: ${(target)}`)
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.splice(key, 1)
     return
   }
-  const ob = (target: any).__ob__
+  const ob = (target).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid deleting properties on a Vue instance or its root $data ' +
@@ -265,7 +265,7 @@ export function del (target: Array<any> | Object, key: any) {
  * Collect dependencies on array elements when the array is touched, since
  * we cannot intercept array element access like property getters.
  */
-function dependArray (value: Array<any>) {
+function dependArray (value) {
   for (let e, i = 0, l = value.length; i < l; i++) {
     e = value[i]
     e && e.__ob__ && e.__ob__.dep.depend()

@@ -1,43 +1,43 @@
 /* @flow */
 
 export default class VNode {
-  tag: string | void;
-  data: VNodeData | void;
-  children: ?Array<VNode>;
-  text: string | void;
-  elm: Node | void;
-  ns: string | void;
-  context: Component | void; // rendered in this component's scope
-  key: string | number | void;
-  componentOptions: VNodeComponentOptions | void;
-  componentInstance: Component | void; // component instance
-  parent: VNode | void; // component placeholder node
+  tag;
+  data;
+  children;
+  text;
+  elm;
+  ns;
+  context; // rendered in this component's scope
+  key;
+  componentOptions;
+  componentInstance; // component instance
+  parent; // component placeholder node
 
   // strictly internal
-  raw: boolean; // contains raw HTML? (server only)
-  isStatic: boolean; // hoisted static node
-  isRootInsert: boolean; // necessary for enter transition check
-  isComment: boolean; // empty comment placeholder?
-  isCloned: boolean; // is a cloned node?
-  isOnce: boolean; // is a v-once node?
-  asyncFactory: Function | void; // async component factory function
-  asyncMeta: Object | void;
-  isAsyncPlaceholder: boolean;
-  ssrContext: Object | void;
-  fnContext: Component | void; // real context vm for functional nodes
-  fnOptions: ?ComponentOptions; // for SSR caching
-  devtoolsMeta: ?Object; // used to store functional render context for devtools
-  fnScopeId: ?string; // functional scope id support
+  raw; // contains raw HTML? (server only)
+  isStatic; // hoisted static node
+  isRootInsert; // necessary for enter transition check
+  isComment; // empty comment placeholder?
+  isCloned; // is a cloned node?
+  isOnce; // is a v-once node?
+  asyncFactory; // async component factory function
+  asyncMeta;
+  isAsyncPlaceholder;
+  ssrContext;
+  fnContext; // real context vm for functional nodes
+  fnOptions; // for SSR caching
+  devtoolsMeta; // used to store functional render context for devtools
+  fnScopeId; // functional scope id support
 
   constructor (
-    tag?: string,
-    data?: VNodeData,
-    children?: ?Array<VNode>,
-    text?: string,
-    elm?: Node,
-    context?: Component,
-    componentOptions?: VNodeComponentOptions,
-    asyncFactory?: Function
+    tag,
+    data,
+    children,
+    text,
+    elm,
+    context,
+    componentOptions,
+    asyncFactory
   ) {
     this.tag = tag
     this.data = data
@@ -66,19 +66,19 @@ export default class VNode {
 
   // DEPRECATED: alias for componentInstance for backwards compat.
   /* istanbul ignore next */
-  get child (): Component | void {
+  get child () {
     return this.componentInstance
   }
 }
 
-export const createEmptyVNode = (text: string = '') => {
+export const createEmptyVNode = (text = '') => {
   const node = new VNode()
   node.text = text
   node.isComment = true
   return node
 }
 
-export function createTextVNode (val: string | number) {
+export function createTextVNode (val) {
   return new VNode(undefined, undefined, undefined, String(val))
 }
 
@@ -86,7 +86,7 @@ export function createTextVNode (val: string | number) {
 // used for static nodes and slot nodes because they may be reused across
 // multiple renders, cloning them avoids errors when DOM manipulations rely
 // on their elm reference.
-export function cloneVNode (vnode: VNode): VNode {
+export function cloneVNode (vnode) {
   const cloned = new VNode(
     vnode.tag,
     vnode.data,

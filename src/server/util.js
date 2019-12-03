@@ -1,16 +1,16 @@
 /* @flow */
 
-export const isJS = (file: string): boolean => /\.js(\?[^.]+)?$/.test(file)
+export const isJS = (file) => /\.js(\?[^.]+)?$/.test(file)
 
-export const isCSS = (file: string): boolean => /\.css(\?[^.]+)?$/.test(file)
+export const isCSS = (file) => /\.css(\?[^.]+)?$/.test(file)
 
 export function createPromiseCallback () {
   let resolve, reject
-  const promise: Promise<string> = new Promise((_resolve, _reject) => {
+  const promise = new Promise((_resolve, _reject) => {
     resolve = _resolve
     reject = _reject
   })
-  const cb = (err: Error, res?: string) => {
+  const cb = (err, res) => {
     if (err) return reject(err)
     resolve(res || '')
   }

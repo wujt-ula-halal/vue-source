@@ -1,8 +1,9 @@
 /* @flow */
 
-import { namespaceMap } from 'web/util/index'
+// import { namespaceMap } from 'web/util/index'
+import { namespaceMap } from '../../web/util/index'
 
-export function createElement (tagName: string, vnode: VNode): Element {
+export function createElement (tagName, vnode) {
   const elm = document.createElement(tagName)
   if (tagName !== 'select') {
     return elm
@@ -14,46 +15,46 @@ export function createElement (tagName: string, vnode: VNode): Element {
   return elm
 }
 
-export function createElementNS (namespace: string, tagName: string): Element {
+export function createElementNS (namespace, tagName) {
   return document.createElementNS(namespaceMap[namespace], tagName)
 }
 
-export function createTextNode (text: string): Text {
+export function createTextNode (text) {
   return document.createTextNode(text)
 }
 
-export function createComment (text: string): Comment {
+export function createComment (text) {
   return document.createComment(text)
 }
 
-export function insertBefore (parentNode: Node, newNode: Node, referenceNode: Node) {
+export function insertBefore (parentNode, newNode, referenceNode) {
   parentNode.insertBefore(newNode, referenceNode)
 }
 
-export function removeChild (node: Node, child: Node) {
+export function removeChild (node, child) {
   node.removeChild(child)
 }
 
-export function appendChild (node: Node, child: Node) {
+export function appendChild (node, child) {
   node.appendChild(child)
 }
 
-export function parentNode (node: Node): ?Node {
+export function parentNode (node) {
   return node.parentNode
 }
 
-export function nextSibling (node: Node): ?Node {
+export function nextSibling (node) {
   return node.nextSibling
 }
 
-export function tagName (node: Element): string {
+export function tagName (node) {
   return node.tagName
 }
 
-export function setTextContent (node: Node, text: string) {
+export function setTextContent (node, text) {
   node.textContent = text
 }
 
-export function setStyleScope (node: Element, scopeId: string) {
+export function setStyleScope (node, scopeId) {
   node.setAttribute(scopeId, '')
 }

@@ -1,10 +1,15 @@
 /* @flow */
 
-import { isDef, isUndef } from 'shared/util'
-import { updateListeners } from 'core/vdom/helpers/index'
-import { isIE, isFF, supportsPassive, isUsingMicroTask } from 'core/util/index'
-import { RANGE_TOKEN, CHECKBOX_RADIO_TOKEN } from 'web/compiler/directives/model'
-import { currentFlushTimestamp } from 'core/observer/scheduler'
+// import { isDef, isUndef } from 'shared/util'
+import { isDef, isUndef } from '../../../../shared/util'
+// import { updateListeners } from 'core/vdom/helpers/index'
+import { updateListeners } from '../../../../core/vdom/helpers/index'
+// import { isIE, isFF, supportsPassive, isUsingMicroTask } from 'core/util/index'
+import { isIE, isFF, supportsPassive, isUsingMicroTask } from '../../../../core/util/index'
+// import { RANGE_TOKEN, CHECKBOX_RADIO_TOKEN } from 'web/compiler/directives/model'
+import { RANGE_TOKEN, CHECKBOX_RADIO_TOKEN } from '../../../web/compiler/directives/model'
+// import { currentFlushTimestamp } from 'core/observer/scheduler'
+import { currentFlushTimestamp } from '../../../../core/observer/scheduler'
 
 // normalize v-model event tokens that can only be determined at runtime.
 // it's important to place the event as the first in the array because
@@ -27,7 +32,7 @@ function normalizeEvents (on) {
   }
 }
 
-let target: any
+let target
 
 function createOnceHandler (event, handler, capture) {
   const _target = target // save current target element in closure
@@ -45,10 +50,10 @@ function createOnceHandler (event, handler, capture) {
 const useMicrotaskFix = isUsingMicroTask && !(isFF && Number(isFF[1]) <= 53)
 
 function add (
-  name: string,
-  handler: Function,
-  capture: boolean,
-  passive: boolean
+  name,
+  handler,
+  capture,
+  passive
 ) {
   // async edge case #6566: inner click event triggers patch, event handler
   // attached to outer element during patch, and triggered again. This
@@ -90,10 +95,10 @@ function add (
 }
 
 function remove (
-  name: string,
-  handler: Function,
-  capture: boolean,
-  _target?: HTMLElement
+  name,
+  handler,
+  capture,
+  _target
 ) {
   (_target || target).removeEventListener(
     name,
@@ -102,7 +107,7 @@ function remove (
   )
 }
 
-function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+function updateDOMListeners (oldVnode, vnode) {
   if (isUndef(oldVnode.data.on) && isUndef(vnode.data.on)) {
     return
   }

@@ -1,15 +1,16 @@
 /* @flow */
 
-import { extend } from 'shared/util'
+// import { extend } from 'shared/util'
+import { extend } from '../shared/util'
 import { detectErrors } from './error-detector'
 import { createCompileToFunctionFn } from './to-function'
 
-export function createCompilerCreator (baseCompile: Function): Function {
-  return function createCompiler (baseOptions: CompilerOptions) {
+export function createCompilerCreator (baseCompile) {
+  return function createCompiler (baseOptions) {
     function compile (
-      template: string,
-      options?: CompilerOptions
-    ): CompiledResult {
+      template,
+      options
+    ) {
       const finalOptions = Object.create(baseOptions)
       const errors = []
       const tips = []
@@ -24,7 +25,7 @@ export function createCompilerCreator (baseCompile: Function): Function {
           const leadingSpaceLength = template.match(/^\s*/)[0].length
 
           warn = (msg, range, tip) => {
-            const data: WarningMessage = { msg }
+            const data = { msg }
             if (range) {
               if (range.start != null) {
                 data.start = range.start + leadingSpaceLength

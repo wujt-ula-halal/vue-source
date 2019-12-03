@@ -1,24 +1,11 @@
 /* @flow */
 
-import {
-  warn,
-  invokeWithErrorHandling
-} from 'core/util/index'
-import {
-  cached,
-  isUndef,
-  isTrue,
-  isPlainObject
-} from 'shared/util'
+// import {warn,invokeWithErrorHandling} from 'core/util/index'
+import {warn,invokeWithErrorHandling} from '../../../core/util/index'
+// import {cached,isUndef,isTrue,isPlainObject} from 'shared/util'
+import {cached,isUndef,isTrue,isPlainObject} from '../../../shared/util'
 
-const normalizeEvent = cached((name: string): {
-  name: string,
-  once: boolean,
-  capture: boolean,
-  passive: boolean,
-  handler?: Function,
-  params?: Array<any>
-} => {
+const normalizeEvent = cached((name)  => {
   const passive = name.charAt(0) === '&'
   name = passive ? name.slice(1) : name
   const once = name.charAt(0) === '~' // Prefixed last, checked first
@@ -33,7 +20,7 @@ const normalizeEvent = cached((name: string): {
   }
 })
 
-export function createFnInvoker (fns: Function | Array<Function>, vm: ?Component): Function {
+export function createFnInvoker (fns, vm) {
   function invoker () {
     const fns = invoker.fns
     if (Array.isArray(fns)) {
@@ -51,12 +38,12 @@ export function createFnInvoker (fns: Function | Array<Function>, vm: ?Component
 }
 
 export function updateListeners (
-  on: Object,
-  oldOn: Object,
-  add: Function,
-  remove: Function,
-  createOnceHandler: Function,
-  vm: Component
+  on,
+  oldOn,
+  add,
+  remove,
+  createOnceHandler,
+  vm
 ) {
   let name, def, cur, old, event
   for (name in on) {

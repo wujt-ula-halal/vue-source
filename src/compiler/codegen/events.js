@@ -5,7 +5,7 @@ const fnInvokeRE = /\([^)]*?\);*$/
 const simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['[^']*?']|\["[^"]*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*$/
 
 // KeyboardEvent.keyCode aliases
-const keyCodes: { [key: string]: number | Array<number> } = {
+const keyCodes = {
   esc: 27,
   tab: 9,
   enter: 13,
@@ -18,7 +18,7 @@ const keyCodes: { [key: string]: number | Array<number> } = {
 }
 
 // KeyboardEvent.key aliases
-const keyNames: { [key: string]: string | Array<string> } = {
+const keyNames = {
   // #7880: IE11 and Edge use `Esc` for Escape key name.
   esc: ['Esc', 'Escape'],
   tab: 'Tab',
@@ -39,7 +39,7 @@ const keyNames: { [key: string]: string | Array<string> } = {
 // the listener for .once
 const genGuard = condition => `if(${condition})return null;`
 
-const modifierCode: { [key: string]: string } = {
+const modifierCode = {
   stop: '$event.stopPropagation();',
   prevent: '$event.preventDefault();',
   self: genGuard(`$event.target !== $event.currentTarget`),
@@ -52,32 +52,10 @@ const modifierCode: { [key: string]: string } = {
   right: genGuard(`'button' in $event && $event.button !== 2`)
 }
 
-export function genHandlers (
-  events: ASTElementHandlers,
-  isNative: boolean
-): string {
-  const prefix = isNative ? 'nativeOn:' : 'on:'
-  let staticHandlers = ``
-  let dynamicHandlers = ``
-  for (const name in events) {
-    const handlerCode = genHandler(events[name])
-    if (events[name] && events[name].dynamic) {
-      dynamicHandlers += `${name},${handlerCode},`
-    } else {
-      staticHandlers += `"${name}":${handlerCode},`
-    }
-  }
-  staticHandlers = `{${staticHandlers.slice(0, -1)}}`
-  if (dynamicHandlers) {
-    return prefix + `_d(${staticHandlers},[${dynamicHandlers.slice(0, -1)}])`
-  } else {
-    return prefix + staticHandlers
-  }
-}
 
 // Generate handler code with binding params on Weex
 /* istanbul ignore next */
-function genWeexHandler (params: Array<any>, handlerCode: string) {
+function genWeexHandler (params, handlerCode) {
   let innerHandlerCode = handlerCode
   const exps = params.filter(exp => simplePathRE.test(exp) && exp !== '$event')
   const bindings = exps.map(exp => ({ '@binding': exp }))
@@ -93,7 +71,7 @@ function genWeexHandler (params: Array<any>, handlerCode: string) {
     '}'
 }
 
-function genHandler (handler: ASTElementHandler | Array<ASTElementHandler>): string {
+function genHandler (handler) {
   if (!handler) {
     return 'function(){}'
   }
@@ -129,7 +107,7 @@ function genHandler (handler: ASTElementHandler | Array<ASTElementHandler>): str
           keys.push(key)
         }
       } else if (key === 'exact') {
-        const modifiers: ASTModifiers = (handler.modifiers: any)
+        const modifiers = (handler.modifiers)
         genModifierCode += genGuard(
           ['ctrl', 'shift', 'alt', 'meta']
             .filter(keyModifier => !modifiers[keyModifier])
@@ -162,7 +140,7 @@ function genHandler (handler: ASTElementHandler | Array<ASTElementHandler>): str
   }
 }
 
-function genKeyFilter (keys: Array<string>): string {
+function genKeyFilter (keys) {
   return (
     // make sure the key filters only apply to KeyboardEvents
     // #9441: can't use 'keyCode' in $event because Chrome autofill fires fake
@@ -172,7 +150,7 @@ function genKeyFilter (keys: Array<string>): string {
   )
 }
 
-function genFilterCode (key: string): string {
+function genFilterCode (key) {
   const keyVal = parseInt(key, 10)
   if (keyVal) {
     return `$event.keyCode!==${keyVal}`
@@ -187,4 +165,28 @@ function genFilterCode (key: string): string {
     `${JSON.stringify(keyName)}` +
     `)`
   )
+}
+
+
+export function genHandlers (
+  events,
+  isNative
+) {
+  const prefix = isNative ? 'nativeOn:' : 'on:'
+  let staticHandlers = ``
+  let dynamicHandlers = ``
+  for (const name in events) {
+    const handlerCode = genHandler(events[name])
+    if (events[name] && events[name].dynamic) {
+      dynamicHandlers += `${name},${handlerCode},`
+    } else {
+      staticHandlers += `"${name}":${handlerCode},`
+    }
+  }
+  staticHandlers = `{${staticHandlers.slice(0, -1)}}`
+  if (dynamicHandlers) {
+    return prefix + `_d(${staticHandlers},[${dynamicHandlers.slice(0, -1)}])`
+  } else {
+    return prefix + staticHandlers
+  }
 }

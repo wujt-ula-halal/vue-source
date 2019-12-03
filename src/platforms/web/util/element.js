@@ -1,7 +1,9 @@
 /* @flow */
 
-import { inBrowser } from 'core/util/env'
-import { makeMap } from 'shared/util'
+// import { inBrowser } from 'core/util/env'
+import { inBrowser } from '../../../core/util/env'
+// import { makeMap } from 'shared/util'
+import { makeMap } from '../../../shared/util'
 
 export const namespaceMap = {
   svg: 'http://www.w3.org/2000/svg',
@@ -31,13 +33,13 @@ export const isSVG = makeMap(
   true
 )
 
-export const isPreTag = (tag: ?string): boolean => tag === 'pre'
+export const isPreTag = (tag) => tag === 'pre'
 
-export const isReservedTag = (tag: string): ?boolean => {
+export const isReservedTag = (tag) => {
   return isHTMLTag(tag) || isSVG(tag)
 }
 
-export function getTagNamespace (tag: string): ?string {
+export function getTagNamespace (tag) {
   if (isSVG(tag)) {
     return 'svg'
   }
@@ -49,7 +51,7 @@ export function getTagNamespace (tag: string): ?string {
 }
 
 const unknownElementCache = Object.create(null)
-export function isUnknownElement (tag: string): boolean {
+export function isUnknownElement (tag) {
   /* istanbul ignore if */
   if (!inBrowser) {
     return true

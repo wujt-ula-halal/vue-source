@@ -1,10 +1,11 @@
 /* @flow */
 
-import { ASSET_TYPES } from 'shared/constants'
+// import { ASSET_TYPES } from 'shared/constants'
+import { ASSET_TYPES } from '../../shared/constants'
 import { defineComputed, proxy } from '../instance/state'
 import { extend, mergeOptions, validateComponentName } from '../util/index'
 
-export function initExtend (Vue: GlobalAPI) {
+export function initExtend (Vue) {
   /**
    * Each instance constructor, including Vue, has a unique
    * cid. This enables us to create wrapped "child
@@ -16,7 +17,7 @@ export function initExtend (Vue: GlobalAPI) {
   /**
    * Class inheritance
    */
-  Vue.extend = function (extendOptions: Object): Function {
+  Vue.extend = function (extendOptions) {
     extendOptions = extendOptions || {}
     const Super = this
     const SuperId = Super.cid

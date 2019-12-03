@@ -20,9 +20,9 @@ if (defer === noop) {
 }
 
 export function createWriteFunction (
-  write: (text: string, next: Function) => boolean,
-  onError: Function
-): Function {
+  write,
+  onError
+) {
   let stackDepth = 0
   const cachedWrite = (text, next) => {
     if (text && cachedWrite.caching) {

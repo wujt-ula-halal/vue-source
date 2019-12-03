@@ -1,14 +1,17 @@
 /* @flow */
 
-import { def } from 'core/util/lang'
-import { normalizeChildren } from 'core/vdom/helpers/normalize-children'
-import { emptyObject } from 'shared/util'
+// import { def } from 'core/util/lang'
+import { def } from '../../../core/util/lang'
+// import { normalizeChildren } from 'core/vdom/helpers/normalize-children'
+import { normalizeChildren } from '../../../core/vdom/helpers/normalize-children'
+// import { emptyObject } from 'shared/util'
+import { emptyObject } from '../../../shared/util'
 
 export function normalizeScopedSlots (
-  slots: { [key: string]: Function } | void,
-  normalSlots: { [key: string]: Array<VNode> },
-  prevSlots?: { [key: string]: Function } | void
-): any {
+  slots,
+  normalSlots,
+  prevSlots
+) {
   let res
   const hasNormalSlots = Object.keys(normalSlots).length > 0
   const isStable = slots ? !!slots.$stable : !hasNormalSlots
@@ -46,7 +49,7 @@ export function normalizeScopedSlots (
   // avoriaz seems to mock a non-extensible $scopedSlots object
   // and when that is passed down this would cause an error
   if (slots && Object.isExtensible(slots)) {
-    (slots: any)._normalized = res
+    (slots)._normalized = res
   }
   def(res, '$stable', isStable)
   def(res, '$key', key)
